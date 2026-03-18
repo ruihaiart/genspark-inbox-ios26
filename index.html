@@ -39,6 +39,17 @@ body{background:#E0E2E8;
   0 0 0 12px rgba(0,0,0,.5),0 32px 64px rgba(0,0,0,.28);
   user-select:none}
 
+/* ── Mobile responsive: strip phone shell on real devices ── */
+@media (max-width: 430px) {
+  body{padding:0;background:var(--bg);align-items:flex-start;}
+  .phone{width:100%;height:100dvh;border-radius:0;box-shadow:none;flex-shrink:0;}
+  .di{display:none;}/* hide fake Dynamic Island on real device */
+  /* hide status bar mock, show real OS status bar */
+  .status-bar{display:none;}
+  /* extend screens to fill real viewport */
+  .sc{height:100dvh!important;}
+}
+
 /* Dynamic Island */
 .di{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:35px;
   background:#000;border-radius:20px;z-index:100;display:flex;align-items:center;justify-content:center;gap:8px}
