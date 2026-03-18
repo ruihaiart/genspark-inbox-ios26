@@ -1,0 +1,1805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Genspark Inbox — Extra Style</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{box-sizing:border-box;}
+:root{
+  /* ── Genspark Design System — Light ── */
+  --bg:#F0F2F5;--bg2:#FFFFFF;--bg3:#F4F4F4;--bg4:#EAECEF;
+  --lbl:#232425;--lbl2:#606366;--lbl3:#909499;
+  --sep:rgba(0,0,0,.07);--sep2:rgba(0,0,0,.1);
+  --fill:rgba(0,0,0,.04);--fill2:rgba(0,0,0,.08);
+  --blue:#0F7EFF;--blue-bg:#E8F3FF;
+  --orange:#E07800;--orange-bg:rgba(224,120,0,.1);
+  --green:#059669;--green-bg:#ECFDF5;
+  --purple:#7B3FF2;--purple-bg:rgba(123,63,242,.1);
+  --red:#DC2626;
+  --blur:blur(40px) saturate(180%);
+  --r:54px;
+  /* Liquid Glass tab bar tokens */
+  --glass-bg:rgba(255,255,255,0.65);
+  --glass-border:rgba(255,255,255,0.9);
+  --glass-shadow:0 1px 0 rgba(255,255,255,.85) inset,0 8px 32px rgba(0,0,0,.1),0 2px 8px rgba(0,0,0,.06);
+}
+/* ── Light mode only — dark mode removed ── */
+
+body{background:#E0E2E8;
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  padding:80px 60px;box-sizing:border-box;
+  font-family:-apple-system,'SF Pro Display','Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased}
+
+/* Phone */
+.phone{width:393px;height:852px;background:var(--bg);border-radius:var(--r);overflow:hidden;
+  position:relative;flex-shrink:0;
+  box-shadow:0 0 0 1px rgba(255,255,255,.12),0 0 0 11px #1A1A1A,
+  0 0 0 12px rgba(0,0,0,.5),0 32px 64px rgba(0,0,0,.28);
+  user-select:none}
+
+/* Dynamic Island */
+.di{position:absolute;top:12px;left:50%;transform:translateX(-50%);width:120px;height:35px;
+  background:#000;border-radius:20px;z-index:100;display:flex;align-items:center;justify-content:center;gap:8px}
+.di-cam{width:11px;height:11px;border-radius:50%;background:#0a0a0a;border:2px solid #1a1a1a}
+.di-mic{width:5px;height:5px;border-radius:50%;background:#001020}
+
+/* Status bar */
+.sbar{position:absolute;top:0;left:0;right:0;height:59px;display:flex;align-items:flex-end;
+  justify-content:space-between;padding:0 28px 10px;z-index:50;pointer-events:none}
+.sbar-time{font-size:15px;font-weight:600;letter-spacing:-.3px;color:var(--lbl)}
+.sbar-icons{display:flex;gap:5px;align-items:center;color:var(--lbl)}
+
+/* Screens */
+.screens{position:absolute;inset:0;overflow:hidden}
+.screen{position:absolute;inset:0;background:var(--bg);transition:transform .42s cubic-bezier(.32,.72,0,1);
+  transform:translateX(100%);overflow:hidden;will-change:transform}
+.screen.active{transform:translateX(0)}
+#today{transform:translateX(0)}
+
+/* Scrollable content */
+.sc{position:absolute;top:0;left:0;right:0;bottom:83px;overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;scrollbar-width:none}
+.sc::-webkit-scrollbar{display:none}
+
+/* ── TAB BAR — Liquid Glass ── */
+.tabbar{
+  position:absolute;bottom:16px;left:24px;right:24px;height:68px;
+  background:var(--glass-bg);
+  backdrop-filter:blur(48px) saturate(200%) brightness(1.06);
+  -webkit-backdrop-filter:blur(48px) saturate(200%) brightness(1.06);
+  border-radius:36px;
+  border:.5px solid var(--glass-border);
+  box-shadow:var(--glass-shadow);
+  display:flex;align-items:center;justify-content:space-around;
+  padding:0 16px;z-index:40;
+  /* Specular sheen on top edge */
+  background-image:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.0) 60%);
+}
+.ti{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;
+  flex:1;padding:10px 12px;transition:all .18s;border-radius:20px;position:relative}
+.ti:active{background:rgba(0,0,0,.05)}
+.ti-lbl{font-size:10px;font-weight:600;letter-spacing:.01em}
+.ti.on .ti-lbl{color:var(--blue)}
+.ti.on svg{color:var(--blue)}
+.ti:not(.on) .ti-lbl{color:var(--lbl3)}
+.ti:not(.on) svg{color:var(--lbl3)}
+/* Active tab: pill indicator with large radius */
+.ti.on::before{content:'';position:absolute;inset:4px 6px;
+  background:rgba(15,126,255,.12);border-radius:100px}
+.ti-fab{width:44px;height:44px;border-radius:50%;background:var(--blue);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  box-shadow:0 4px 16px rgba(15,126,255,.4);transition:transform .15s}
+.ti-fab:active{transform:scale(.92)}
+
+/* ── TODAY SCREEN ── */
+.today-hdr{padding:59px 24px 0}
+.today-date{font-size:13px;font-weight:600;color:var(--lbl2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:4px}
+.today-title{font-size:34px;font-weight:700;letter-spacing:-.6px;color:var(--lbl);line-height:1.1}
+.today-subtitle{font-size:15px;color:var(--lbl2);margin-top:5px}
+.today-meta{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:0}
+.acct-row{display:flex;align-items:center;gap:6px;cursor:pointer;margin-top:8px}
+.acct-avs{display:flex}
+.acct-av{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:9px;font-weight:700;border:1.5px solid var(--bg)}
+.acct-av+.acct-av{margin-left:-6px}
+.acct-lbl{font-size:13px;color:var(--lbl2)}
+
+/* Week strip */
+.week-strip{display:flex;justify-content:space-around;padding:16px 20px 4px;gap:6px}
+.wday{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;cursor:pointer}
+.wday-lbl{font-size:11px;font-weight:500;color:var(--lbl3);letter-spacing:.04em}
+.wday-num{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:16px;font-weight:500;color:var(--lbl2)}
+.wday.today .wday-lbl{color:var(--blue)}
+.wday.today .wday-num{background:var(--blue);color:#fff;font-weight:600}
+.wday-dot{width:4px;height:4px;border-radius:50%;background:var(--orange);margin-top:-2px}
+
+/* AI badge */
+.ai-badge{margin:8px 20px 4px;padding:12px 16px;background:var(--bg2);border-radius:16px;
+  display:flex;align-items:center;gap:10px;border:.5px solid var(--sep2)}
+.ai-badge-icon{width:32px;height:32px;border-radius:10px;
+  background:linear-gradient(135deg,var(--blue),#5E5CE6);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.ai-badge-txt{flex:1}
+.ai-badge-title{font-size:14px;font-weight:600;color:var(--lbl);letter-spacing:-.1px}
+.ai-badge-sub{font-size:12px;color:var(--lbl2);margin-top:2px}
+.ai-badge-arrow{color:var(--lbl3)}
+
+/* Section headers */
+.shdr{padding:24px 24px 10px;display:flex;justify-content:space-between;align-items:center}
+.shdr-title{font-size:18px;font-weight:700;color:var(--lbl);letter-spacing:-.2px}
+.shdr-badge{font-size:12px;font-weight:600;padding:3px 8px;border-radius:8px}
+.shdr-link{font-size:14px;color:var(--blue)}
+
+/* Email Card */
+.ecard{margin:0 20px 14px;background:var(--bg2);border-radius:20px;padding:16px 16px 14px 20px;
+  cursor:pointer;border:.5px solid var(--sep);transition:background .12s;position:relative;overflow:hidden}
+.ecard:active{background:var(--bg3)}
+/* Left accent bar — urgency color strip */
+.ecard-accent{position:absolute;left:0;top:0;bottom:0;width:3.5px;border-radius:0}
+/* Top row: avatar + name + role + time */
+.ecard-top{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:14px;font-weight:600;flex-shrink:0}
+.ecard-av-sm{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;opacity:.7}
+.ecard-sender{font-size:12px;font-weight:400;color:var(--lbl3);letter-spacing:0;flex:1}
+.ecard-role{font-size:12px;color:var(--lbl3)}
+.ecard-time{font-size:12px;color:var(--lbl3);flex-shrink:0}
+/* Section header */
+.sec-hdr{display:flex;align-items:center;gap:8px;padding:4px 20px 10px;margin-top:8px}
+.sec-hdr-ico{font-size:12px}
+.sec-hdr-lbl{font-size:11px;font-weight:700;color:var(--lbl3);letter-spacing:.06em;text-transform:uppercase;flex:1}
+.sec-hdr-cnt{font-size:11px;font-weight:600;color:var(--lbl3);background:var(--fill);
+  padding:2px 7px;border-radius:20px}
+/* AI labels — Inbox list */
+.ailbl{display:inline-flex;align-items:center;gap:3px;padding:3px 8px;border-radius:7px;
+  font-size:10px;font-weight:700;letter-spacing:.04em}
+.lbl-act{background:var(--orange-bg);color:#FFB340}
+.lbl-fyi{background:var(--green-bg);color:#32D74B}
+.lbl-nl{background:var(--purple-bg);color:#DA8FFF}
+.udot{width:7px;height:7px;border-radius:50%;background:var(--blue);flex-shrink:0}
+/* Subject */
+.ecard-subj{font-size:19px;font-weight:700;color:var(--lbl);letter-spacing:-.4px;
+  line-height:1.3;margin-bottom:9px}
+/* AI hint */
+.ecard-hint{display:flex;align-items:flex-start;gap:5px;margin-bottom:14px}
+.ecard-hint-ico{font-size:12px;color:var(--blue);flex-shrink:0;margin-top:1px}
+.ecard-hint-txt{font-size:14px;color:var(--lbl2);line-height:1.45;flex:1}
+/* Actions — text links */
+.ecard-actions{display:flex;align-items:center;gap:4px}
+.ecard-act{font-size:13px;font-weight:600;cursor:pointer;transition:opacity .12s;
+  padding:4px 0;background:none;border:none}
+.ecard-act:active{opacity:.5}
+.ecard-act-reply{color:var(--blue)}
+.ecard-act-sep{font-size:13px;color:var(--lbl3);padding:0 4px}
+.ecard-act-snooze{color:var(--lbl3)}
+
+/* ── HTS INLINE STATES ── */
+.hts-idle,.hts-listening,.hts-writing{display:flex;align-items:center;
+  justify-content:center;gap:10px;width:100%}
+/* Waveform bars inside button */
+.hts-wave-inner{display:flex;align-items:center;gap:2.5px;height:20px}
+.hts-bar{width:3px;border-radius:3px;background:rgba(255,255,255,.9);
+  animation:hts-bar-anim .7s ease-in-out infinite alternate}
+.hts-bar:nth-child(1){height:8px;animation-delay:0s}
+.hts-bar:nth-child(2){height:16px;animation-delay:.08s}
+.hts-bar:nth-child(3){height:20px;animation-delay:.04s}
+.hts-bar:nth-child(4){height:12px;animation-delay:.12s}
+.hts-bar:nth-child(5){height:18px;animation-delay:.06s}
+.hts-bar:nth-child(6){height:14px;animation-delay:.1s}
+.hts-bar:nth-child(7){height:20px;animation-delay:.02s}
+.hts-bar:nth-child(8){height:10px;animation-delay:.14s}
+@keyframes hts-bar-anim{from{transform:scaleY(.3);opacity:.5}to{transform:scaleY(1);opacity:1}}
+/* Writing dots */
+.hts-dots span{animation:hts-dot .9s infinite}
+.hts-dots span:nth-child(2){animation-delay:.15s}
+.hts-dots span:nth-child(3){animation-delay:.3s}
+@keyframes hts-dot{0%,100%{opacity:.2}50%{opacity:1}}
+/* ── EXTRA-STYLE COMPOSE (Reply Sheet) ── */
+.ex-compose-sheet{width:100%;height:100%;background:var(--bg);
+  display:flex;flex-direction:column;border-radius:0}
+.ex-compose-nav{display:flex;align-items:center;gap:10px;
+  padding:56px 20px 12px;flex-shrink:0}
+.ex-compose-close{width:36px;height:36px;border-radius:50%;background:var(--fill);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  color:var(--lbl2);flex-shrink:0;transition:background .12s}
+.ex-compose-close:active{background:var(--fill2)}
+.ex-compose-ctx{flex:1;display:flex;align-items:center;gap:5px;
+  padding:0 4px;overflow:hidden}
+.ex-compose-attach{width:34px;height:34px;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;opacity:.7;flex-shrink:0}
+.ex-compose-send{padding:8px 20px;border-radius:100px;
+  background:var(--blue);
+  font-size:15px;font-weight:600;color:#fff;cursor:pointer;
+  white-space:nowrap;flex-shrink:0;transition:opacity .15s}
+.ex-compose-send:active{opacity:.8}
+.ex-compose-subj{font-size:22px;font-weight:700;color:var(--lbl);
+  padding:0 20px 16px;letter-spacing:-.4px;line-height:1.3;flex-shrink:0}
+.ex-compose-body{flex:1;padding:0 20px;overflow-y:auto;display:flex;flex-direction:column}
+.ex-compose-in{width:100%;flex:1;min-height:120px;background:none;border:none;outline:none;
+  font-size:17px;color:var(--lbl);line-height:1.6;font-family:inherit;
+  resize:none;padding:0;margin:0;white-space:pre-wrap}
+.ex-compose-in::placeholder{color:var(--lbl3)}
+.ex-via{font-size:13px;color:var(--lbl3);margin-top:16px;padding-bottom:12px}
+/* Waveform in compose */
+.ex-hts-wave{display:flex;align-items:center;justify-content:center;
+  gap:3px;height:28px;padding:0 20px;margin-bottom:4px;flex-shrink:0}
+/* Hold to Speak row */
+.ex-hts-row{padding:8px 20px 36px;flex-shrink:0}
+.ex-hts-btn{width:100%;height:54px;border-radius:100px;
+  background:var(--blue);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  font-size:17px;font-weight:600;color:#fff;cursor:pointer;
+  box-shadow:0 6px 24px rgba(15,126,255,.3);transition:all .15s;
+  user-select:none}
+.ex-hts-btn:active,.ex-hts-btn.listening{
+  box-shadow:0 4px 32px rgba(15,126,255,.5);transform:scale(.98)}
+.ex-hts-btn.listening{background:#1A8AFF}
+/* ── SPEAKLY standalone (kept for future use) ── */
+.rt-speakly{display:inline-flex;align-items:center;gap:5px;padding:6px 12px;
+  border-radius:20px;background:linear-gradient(135deg,#BF5AF2,#9B59D9);
+  font-size:13px;font-weight:600;color:#fff;cursor:pointer;transition:opacity .12s}
+.rt-speakly:active{opacity:.7}
+/* Speakly overlay */
+.speakly-ov{position:absolute;inset:0;z-index:80;background:rgba(0,0,0,.6);
+  display:flex;align-items:flex-end;backdrop-filter:blur(6px);
+  opacity:0;pointer-events:none;transition:opacity .25s}
+.speakly-ov.open{opacity:1;pointer-events:all}
+.speakly-sheet{width:100%;background:var(--bg);border-radius:28px 28px 0 0;
+  padding:16px 24px 40px;display:flex;flex-direction:column;align-items:center;gap:0}
+.speakly-logo{font-size:13px;font-weight:700;color:var(--lbl3);letter-spacing:.08em;
+  text-transform:uppercase;margin-bottom:24px;margin-top:4px}
+.speakly-mic-wrap{position:relative;width:80px;height:80px;margin-bottom:20px;cursor:pointer}
+.speakly-ring{position:absolute;inset:-10px;border-radius:50%;
+  border:2px solid rgba(191,90,242,.4);animation:speakly-pulse 1.6s ease-out infinite}
+.speakly-ring2{position:absolute;inset:-20px;border-radius:50%;
+  border:1.5px solid rgba(191,90,242,.2);animation:speakly-pulse 1.6s ease-out infinite .4s}
+@keyframes speakly-pulse{0%{transform:scale(.9);opacity:.8}100%{transform:scale(1.3);opacity:0}}
+.speakly-mic-btn{width:80px;height:80px;border-radius:50%;
+  background:linear-gradient(135deg,#BF5AF2,#9B59D9);
+  display:flex;align-items:center;justify-content:center;position:relative;z-index:1;
+  box-shadow:0 8px 24px rgba(191,90,242,.45)}
+.speakly-status{font-size:15px;font-weight:500;color:var(--lbl2);margin-bottom:16px}
+/* Waveform bars */
+.speakly-wave{display:flex;align-items:center;gap:3px;height:36px;margin-bottom:20px}
+.speakly-bar{width:3px;border-radius:3px;background:linear-gradient(180deg,#BF5AF2,#9B59D9);
+  animation:speakly-bar 0.8s ease-in-out infinite alternate}
+.speakly-bar:nth-child(1){height:12px;animation-delay:0s}
+.speakly-bar:nth-child(2){height:24px;animation-delay:.1s}
+.speakly-bar:nth-child(3){height:32px;animation-delay:.05s}
+.speakly-bar:nth-child(4){height:20px;animation-delay:.15s}
+.speakly-bar:nth-child(5){height:28px;animation-delay:.08s}
+.speakly-bar:nth-child(6){height:16px;animation-delay:.2s}
+.speakly-bar:nth-child(7){height:34px;animation-delay:.03s}
+.speakly-bar:nth-child(8){height:22px;animation-delay:.12s}
+.speakly-bar:nth-child(9){height:30px;animation-delay:.07s}
+.speakly-bar:nth-child(10){height:14px;animation-delay:.18s}
+.speakly-bar:nth-child(11){height:26px;animation-delay:.04s}
+.speakly-bar:nth-child(12){height:18px;animation-delay:.14s}
+@keyframes speakly-bar{from{transform:scaleY(.4);opacity:.5}to{transform:scaleY(1);opacity:1}}
+.speakly-preview{width:100%;min-height:52px;background:var(--bg2);border-radius:14px;
+  padding:12px 16px;font-size:15px;color:var(--lbl);line-height:1.5;
+  margin-bottom:20px;border:.5px solid var(--sep);display:none}
+.speakly-preview.show{display:block}
+.speakly-done{width:100%;padding:15px;background:linear-gradient(135deg,#BF5AF2,#9B59D9);
+  border-radius:16px;font-size:16px;font-weight:700;color:#fff;text-align:center;
+  cursor:pointer;transition:opacity .15s;border:none}
+.speakly-done:active{opacity:.7}
+.speakly-cancel{font-size:14px;color:var(--lbl3);margin-top:12px;cursor:pointer;
+  padding:8px;text-align:center}
+/* AI composing row (kept for potential fallback) */
+.sp-compose-row{display:flex;align-items:center;gap:6px;margin-bottom:20px;
+  padding:10px 16px;background:rgba(191,90,242,.12);border-radius:12px;
+  border:.5px solid rgba(191,90,242,.3)}
+.sp-compose-txt{font-size:14px;font-weight:500;color:#BF5AF2}
+.sp-dots span{font-size:18px;font-weight:700;color:#BF5AF2;animation:sp-dot-fade 1.2s infinite}
+.sp-dots span:nth-child(2){animation-delay:.2s}
+.sp-dots span:nth-child(3){animation-delay:.4s}
+@keyframes sp-dot-fade{0%,100%{opacity:.2}50%{opacity:1}}
+/* Realtime cursor */
+.sp-cursor{display:inline-block;width:2px;height:1.1em;background:#BF5AF2;
+  margin-left:1px;vertical-align:text-bottom;
+  animation:sp-blink .7s ease-in-out infinite}
+@keyframes sp-blink{0%,100%{opacity:1}50%{opacity:0}}
+/* Preview text formatting */
+.speakly-preview{white-space:pre-wrap;font-size:14px;line-height:1.65}
+
+/* ── AI AGENT SCREEN ── */
+.agent-screen{display:flex;flex-direction:column;height:100%}
+.agent-msgs{flex:1;overflow-y:auto;padding:16px 16px 8px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.agent-msgs::-webkit-scrollbar{display:none}
+.amsg{display:flex;margin-bottom:14px}
+.amsg-ai{align-items:flex-start;gap:8px}
+.amsg-user{justify-content:flex-end}
+.aav{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--blue),#5E5CE6);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px}
+.abub{max-width:80%;padding:10px 14px;font-size:14px;line-height:1.55;border-radius:4px 18px 18px 18px}
+.abub-ai{background:var(--bg2);color:var(--lbl);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.abub-user{background:var(--blue);color:#fff;border-radius:18px 18px 4px 18px}
+.abub strong{font-weight:600}
+.agent-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 12px;flex-shrink:0}
+.agent-qcard{background:var(--bg2);border-radius:14px;padding:14px 12px;cursor:pointer;
+  border:.5px solid var(--sep);transition:background .12s;text-align:left}
+.agent-qcard:active{background:var(--bg3)}
+.aqc-ico{font-size:20px;display:block;margin-bottom:6px}
+.aqc-txt{font-size:12px;font-weight:600;color:var(--lbl);line-height:1.35}
+.agent-bar{display:flex;gap:10px;align-items:center;padding:10px 16px 20px;
+  border-top:.5px solid var(--sep);background:var(--bg);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);flex-shrink:0}
+.agent-in-wrap{flex:1;display:flex;align-items:center;gap:8px;background:var(--bg2);
+  border-radius:22px;padding:10px 14px;border:.5px solid var(--sep2)}
+.agent-in{flex:1;font-size:15px;color:var(--lbl);background:none;border:none;
+  outline:none;font-family:inherit}
+.agent-in::placeholder{color:var(--lbl3)}
+.agent-send{width:36px;height:36px;border-radius:50%;background:var(--blue);display:flex;
+  align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:transform .15s}
+.agent-send:active{transform:scale(.9)}
+
+/* Archive all button */
+.archive-all{margin:8px 20px 0;padding:14px;background:var(--bg2);border-radius:18px;
+  display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+  border:.5px solid var(--sep);transition:background .12s}
+.archive-all:active{background:var(--bg3)}
+.archive-all-txt{font-size:15px;font-weight:600;color:var(--lbl2)}
+
+/* Compact card (FYI / Newsletter) */
+.ecrow{margin:0 20px;background:var(--bg2);cursor:pointer;transition:background .12s;
+  display:flex;align-items:flex-start;gap:12px;padding:14px 16px;position:relative}
+.ecrow+.ecrow{border-top:.5px solid var(--sep)}
+.ecrow:first-child{border-radius:16px 16px 0 0}
+.ecrow:last-child{border-radius:0 0 16px 16px;margin-bottom:10px}
+.ecrow:only-child{border-radius:16px;margin-bottom:10px}
+.ecrow:active{background:var(--bg3)}
+.ecrow-meta{flex:1;min-width:0}
+.ecrow-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.ecrow-sender{font-size:14px;font-weight:600;color:var(--lbl);letter-spacing:-.1px}
+.ecrow-time{font-size:12px;color:var(--lbl3)}
+.ecrow-lbl-row{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.ecrow-subj{font-size:13px;color:var(--lbl2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ecrow-prev{font-size:12px;color:var(--lbl3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ── INBOX SCREEN (traditional list but dark) ── */
+.inbox-hdr{padding:59px 24px 12px;display:flex;justify-content:space-between;align-items:flex-end}
+.ltitle{font-size:34px;font-weight:700;letter-spacing:-.5px;color:var(--lbl)}
+.nbtn{width:34px;height:34px;border-radius:50%;background:var(--fill);display:flex;
+  align-items:center;justify-content:center;cursor:pointer;transition:opacity .12s;position:relative}
+.nbtn:active{opacity:.6}
+.dot-badge{position:absolute;top:0;right:0;width:9px;height:9px;background:var(--blue);
+  border-radius:50%;border:1.5px solid var(--bg)}
+
+/* Chips */
+.chips{display:flex;gap:8px;padding:0 20px 12px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:50px;
+  font-size:14px;font-weight:500;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.chip-all{background:var(--lbl);color:var(--bg)}
+.chip-act{background:var(--orange-bg);color:#FFB340;border:.5px solid rgba(255,159,10,.3)}
+.chip-fyi{background:var(--fill);color:var(--lbl2)}
+.chip-nl{background:var(--fill);color:var(--lbl2)}
+.chip-dot{width:6px;height:6px;border-radius:50%;background:var(--orange)}
+.chip-cnt{background:var(--orange);color:#fff;font-size:11px;font-weight:700;
+  padding:1px 5px;border-radius:20px;min-width:18px;text-align:center;line-height:14px}
+
+/* ── INBOX LIST ROWS ── */
+.erow-wrap{position:relative;overflow:hidden;background:var(--bg2)}
+.erow-actions{position:absolute;right:0;top:0;bottom:0;display:flex;align-items:stretch}
+.eact{display:flex;align-items:center;justify-content:center;padding:0 18px;
+  flex-direction:column;gap:3px;font-size:11px;font-weight:600;color:#fff;cursor:pointer}
+.eact-arch{background:#34C759}.eact-snz{background:#FF9F0A}.eact-del{background:#FF3B30}
+/* Row base */
+.erow{display:flex;align-items:flex-start;gap:12px;
+  padding:13px 20px 13px 30px; /* left padding leaves space for unread dot */
+  cursor:pointer;position:relative;background:var(--bg2);transition:background .12s}
+.erow::after{content:'';position:absolute;bottom:0;left:72px;right:0;height:.5px;background:var(--sep)}
+.erow:active{background:var(--bg3)}
+/* Unread blue dot — absolute left edge */
+.udot-row{position:absolute;left:12px;top:22px;
+  width:8px;height:8px;border-radius:50%;background:var(--blue);flex-shrink:0}
+/* Avatar — larger, soft pastel */
+.av-lg{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:15px;font-weight:700;flex-shrink:0;letter-spacing:-.3px}
+/* Row body: 3 lines */
+.erow-body{flex:1;min-width:0}
+.erow-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:2px}
+.esender{font-size:15px;font-weight:600;color:var(--lbl);letter-spacing:-.2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1;margin-right:8px}
+.esender.rd{font-weight:400;color:var(--lbl2)}
+.etime{font-size:12px;color:var(--lbl3);flex-shrink:0}
+.esubj{font-size:14px;font-weight:600;color:var(--lbl);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;
+  letter-spacing:-.1px}
+.esubj.rd{font-weight:400;color:var(--lbl2)}
+.eprev{font-size:13px;color:var(--lbl3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* Section header in list */
+.list-sec-hdr{padding:16px 20px 6px;font-size:12px;font-weight:700;
+  color:var(--lbl3);letter-spacing:.06em;text-transform:uppercase}
+
+/* ── DETAIL SCREEN ── */
+.dnav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border-bottom:.5px solid var(--sep);padding:59px 20px 12px}
+.back{display:flex;align-items:center;gap:4px;color:var(--blue);font-size:17px;cursor:pointer}
+.back:active{opacity:.6}
+.dactions{display:flex;gap:8px}
+.dabtn{width:34px;height:34px;border-radius:50%;background:var(--fill);display:flex;
+  align-items:center;justify-content:center;cursor:pointer;color:var(--blue);transition:opacity .12s}
+.dabtn:active{opacity:.6}
+.dsubj{font-size:22px;font-weight:700;letter-spacing:-.4px;color:var(--lbl);
+  line-height:1.2;margin-top:12px;padding:0 20px}
+.scard{display:flex;justify-content:space-between;align-items:center;padding:14px 20px}
+.scard-l{display:flex;align-items:center;gap:10px}
+.sname{font-size:15px;font-weight:600;color:var(--lbl)}
+.saddr{font-size:13px;color:var(--lbl2);margin-top:1px}
+.stime{font-size:13px;color:var(--lbl2);text-align:right;line-height:1.4}
+
+/* AI Card — dark glass */
+/* AI Summary collapsed trigger */
+.ai-sum-trigger{margin:4px 20px 12px;padding:10px 14px;border-radius:100px;
+  display:flex;align-items:center;gap:8px;cursor:pointer;
+  border:1.5px solid rgba(15,126,255,.25);background:rgba(15,126,255,.05);
+  font-size:14px;font-weight:500;color:var(--blue);transition:background .15s}
+.ai-sum-trigger:active{background:rgba(15,126,255,.1)}
+.ai-card{margin:4px 20px 16px;background:rgba(10,132,255,.12);border-radius:16px;padding:16px;
+  border:.5px solid rgba(10,132,255,.25);position:relative;overflow:hidden;
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.ai-card::before{content:'';position:absolute;top:0;left:0;right:0;height:.5px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent)}
+.ai-hdr{display:flex;align-items:center;gap:6px;margin-bottom:10px}
+.ai-star{width:18px;height:18px;background:linear-gradient(135deg,var(--blue),#5E5CE6);
+  border-radius:5px;display:flex;align-items:center;justify-content:center}
+.ai-lbl{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.06em}
+.ai-txt{font-size:14px;color:var(--lbl);line-height:21px}
+.ai-act{margin-top:12px;background:rgba(10,132,255,.15);border-radius:10px;padding:10px 12px}
+.ai-act-lbl{font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.05em;margin-bottom:3px}
+.ai-act-txt{font-size:13px;color:rgba(255,255,255,.8);line-height:18px}
+
+/* Email body */
+.ebody{padding:0 20px 16px}
+.ebody p{font-size:16px;color:var(--lbl);line-height:24px;margin-bottom:14px}
+.earlier-msg{margin:0 20px 16px;padding:12px 14px;background:var(--bg2);border-radius:10px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;
+  color:var(--lbl2);font-size:14px;border:.5px solid var(--sep)}
+
+/* Suggested Replies */
+.sreplies{padding:10px 16px;overflow-x:auto;display:flex;gap:8px;scrollbar-width:none;
+  background:rgba(240,242,245,.92);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border-top:.5px solid var(--sep)}
+.sreplies::-webkit-scrollbar{display:none}
+.srchip{padding:9px 14px;border-radius:20px;border:.5px solid var(--sep2);background:var(--bg2);
+  font-size:13px;font-weight:500;color:var(--lbl);white-space:nowrap;cursor:pointer;flex-shrink:0}
+.srchip:active{background:var(--bg3)}
+.srchip-blue{background:var(--blue-bg);border-color:rgba(10,132,255,.3);color:#60AEFF}
+
+/* Detail action bar — Extra style */
+.detail-actions{position:absolute;bottom:0;left:0;right:0;
+  background:rgba(255,255,255,.95);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border-top:.5px solid var(--sep);padding:12px 20px 32px;display:flex;align-items:center;gap:12px}
+.dact-reply-pill{flex:1;height:54px;border-radius:100px;
+  background:var(--blue);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  font-size:17px;font-weight:600;color:#fff;cursor:pointer;
+  box-shadow:0 6px 20px rgba(15,126,255,.3);transition:opacity .15s}
+.dact-reply-pill:active{opacity:.8}
+.dact-fwd-btn{width:54px;height:54px;border-radius:50%;background:var(--fill);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  border:.5px solid var(--sep2);cursor:pointer;transition:background .12s}
+.dact-fwd-btn:active{background:var(--fill2)}
+/* compat — hide old dact-btn */
+.dact-btn{display:none}
+
+/* ── FOCUS ── */
+.fc{margin:0 20px 12px;background:var(--bg2);border-radius:16px;overflow:hidden;border:.5px solid var(--sep)}
+.fc-hdr{padding:14px 16px 10px;border-bottom:.5px solid var(--sep);
+  display:flex;justify-content:space-between;align-items:center}
+.fc-title{font-size:13px;font-weight:700;color:var(--lbl2);letter-spacing:.05em}
+.fc-badge{font-size:12px;font-weight:600;padding:3px 8px;border-radius:8px}
+.fi{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;cursor:pointer;
+  transition:background .12s;position:relative}
+.fi:active{background:var(--bg3)}
+.fi+.fi::before{content:'';position:absolute;top:0;left:16px;right:0;height:.5px;background:var(--sep)}
+.fi-r{flex:1;min-width:0}
+.fi-top{display:flex;justify-content:space-between;align-items:baseline}
+.fi-sender{font-size:14px;font-weight:600;color:var(--lbl)}
+.fi-time{font-size:12px;color:var(--lbl3)}
+.fi-subj{font-size:13px;color:var(--lbl2);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fi-prev{font-size:12px;color:var(--lbl3);margin-top:2px}
+.ai-brief{margin:0 20px 12px;background:linear-gradient(135deg,rgba(48,209,88,.12),rgba(48,209,88,.06));
+  border-radius:16px;padding:14px 16px;border:.5px solid rgba(48,209,88,.2)}
+.ab-hdr{display:flex;align-items:center;gap:6px;margin-bottom:8px}
+.ab-lbl{font-size:11px;font-weight:700;color:#32D74B;letter-spacing:.06em}
+.ab-txt{font-size:14px;color:rgba(255,255,255,.8);line-height:20px}
+
+/* ── FLOWS ── */
+.flow-card{margin:0 20px 12px;background:var(--bg2);border-radius:16px;padding:16px;border:.5px solid var(--sep)}
+.flow-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.flow-ic{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.tog{width:50px;height:30px;border-radius:15px;background:var(--green);position:relative;cursor:pointer;transition:background .2s}
+.tog::after{content:'';position:absolute;top:3px;right:3px;width:24px;height:24px;background:#fff;border-radius:50%;box-shadow:0 2px 4px rgba(0,0,0,.3);transition:all .2s}
+.tog.off{background:var(--fill2)}.tog.off::after{right:auto;left:3px}
+.flow-name{font-size:16px;font-weight:600;color:var(--lbl);margin-bottom:3px}
+.flow-desc{font-size:14px;color:var(--lbl2);line-height:19px}
+.flow-stats{display:flex;gap:16px;margin-top:12px;padding-top:10px;border-top:.5px solid var(--sep)}
+.fs-num{font-size:18px;font-weight:700;color:var(--lbl);letter-spacing:-.3px}
+.fs-lbl{font-size:11px;color:var(--lbl3)}
+
+/* ── ME ── */
+.me-section{margin:0 20px 20px}
+.me-stitle{font-size:13px;font-weight:600;color:var(--lbl2);letter-spacing:.05em;text-transform:uppercase;padding:0 4px;margin-bottom:8px}
+.me-card{background:var(--bg2);border-radius:16px;overflow:hidden;border:.5px solid var(--sep)}
+.me-row{display:flex;align-items:center;gap:12px;padding:13px 16px;position:relative;cursor:pointer;transition:background .12s}
+.me-row:active{background:var(--bg3)}
+.me-row+.me-row::before{content:'';position:absolute;top:0;left:52px;right:0;height:.5px;background:var(--sep)}
+.me-ric{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px}
+.me-txt{flex:1;font-size:16px;color:var(--lbl)}
+.me-right{font-size:15px;color:var(--lbl3)}
+.me-tog{width:44px;height:26px;border-radius:13px;background:var(--green);position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.me-tog::after{content:'';position:absolute;top:2px;right:2px;width:22px;height:22px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:all .2s}
+.me-tog.off{background:var(--fill2)}.me-tog.off::after{right:auto;left:2px}
+
+/* ── SEARCH ── */
+.search-bar-row{display:flex;align-items:center;gap:10px;padding:59px 16px 12px}
+.si-wrap{flex:1;display:flex;align-items:center;gap:8px;background:var(--bg2);border-radius:12px;padding:10px 14px;border:.5px solid var(--sep)}
+.si-input{flex:1;font-size:16px;background:none;border:none;outline:none;font-family:inherit;color:var(--lbl)}
+.si-input::placeholder{color:var(--lbl3)}
+.ai-srchips{display:flex;gap:8px;padding:0 20px 12px;overflow-x:auto;scrollbar-width:none;flex-wrap:wrap}
+.ai-srchips::-webkit-scrollbar{display:none}
+.aisrchip{padding:8px 14px;border-radius:20px;background:var(--blue-bg);border:.5px solid rgba(10,132,255,.2);font-size:13px;font-weight:500;color:#60AEFF;cursor:pointer;white-space:nowrap}
+.ri{display:flex;align-items:center;gap:12px;padding:12px 20px;cursor:pointer;border-bottom:.5px solid var(--sep)}
+.ri:active{background:var(--bg2)}
+
+/* ── OVERLAYS ── */
+.overlay{position:absolute;inset:0;z-index:80;display:flex;flex-direction:column;
+  justify-content:flex-end;background:rgba(0,0,0,0);transition:background .3s;pointer-events:none}
+.overlay.open{background:rgba(0,0,0,.6);pointer-events:all}
+.sheet{background:var(--bg2);border-radius:14px 14px 0 0;transform:translateY(100%);
+  transition:transform .38s cubic-bezier(.32,.72,0,1);will-change:transform;
+  overflow:hidden;display:flex;flex-direction:column;max-height:calc(100% - 40px);
+  border-top:.5px solid var(--sep2)}
+.overlay.open .sheet{transform:translateY(0)}
+/* Reply overlay overrides to full-screen */
+#reply-overlay{justify-content:flex-start}
+#reply-overlay .ex-compose-sheet{transform:translateY(100%);transition:transform .38s cubic-bezier(.32,.72,0,1)}
+#reply-overlay.open .ex-compose-sheet{transform:translateY(0)}
+#reply-overlay.open{background:none}
+.shdl{width:36px;height:4px;border-radius:2px;background:var(--fill2);margin:10px auto 0;flex-shrink:0}
+.shdr-row{display:flex;justify-content:space-between;align-items:center;
+  padding:12px 20px 8px;border-bottom:.5px solid var(--sep);flex-shrink:0}
+.sh-cancel{font-size:16px;color:var(--lbl2);cursor:pointer}
+.sh-cancel:active{opacity:.6}
+.sh-title{font-size:17px;font-weight:600;color:var(--lbl)}
+.sh-send{font-size:16px;font-weight:600;color:var(--blue);cursor:pointer}
+.cfield{display:flex;align-items:center;gap:8px;padding:12px 20px;border-bottom:.5px solid var(--sep);flex-shrink:0}
+.cflbl{font-size:16px;color:var(--lbl2);width:30px;flex-shrink:0}
+.cfval{font-size:16px;color:var(--lbl);flex:1}
+.rchip{background:var(--fill2);border-radius:20px;padding:3px 10px;font-size:14px;color:var(--lbl);font-weight:500}
+.thread-ctx{margin:10px 20px;padding:10px 12px;background:var(--fill);border-radius:10px;
+  font-size:13px;color:var(--lbl2);cursor:pointer;display:flex;align-items:center;gap:6px;flex-shrink:0}
+
+/* ── REPLY SHEET (simplified) ── */
+.reply-compose{flex:1;padding:14px 20px;font-size:16px;color:var(--lbl);
+  line-height:24px;overflow-y:auto;min-height:120px;position:relative}
+.reply-compose-in{width:100%;min-height:120px;font-size:16px;color:var(--lbl);
+  background:none;border:none;outline:none;font-family:inherit;line-height:24px;resize:none}
+.reply-compose-in::placeholder{color:var(--lbl3)}
+/* AI suggested badge — appears when AI fills the box */
+.ai-suggested-tag{display:none;align-items:center;gap:4px;padding:3px 8px 3px 6px;
+  background:var(--blue-bg);border-radius:20px;font-size:11px;font-weight:600;
+  color:var(--blue);margin:0 20px 6px;width:fit-content;border:.5px solid rgba(10,132,255,.2)}
+.ai-suggested-tag.show{display:flex}
+/* Reply toolbar */
+.reply-toolbar{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 16px 20px;border-top:.5px solid var(--sep);flex-shrink:0;
+  background:var(--bg);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.rt-left{display:flex;align-items:center;gap:14px}
+.rt-icon{color:var(--lbl3);cursor:pointer;display:flex;align-items:center;transition:opacity .12s}
+.rt-icon:active{opacity:.5}
+.rt-ai{display:flex;align-items:center;gap:5px;padding:7px 14px;border-radius:20px;
+  background:var(--blue);color:#fff;font-size:14px;font-weight:600;cursor:pointer;
+  transition:opacity .15s;flex-shrink:0}
+.rt-ai:active{opacity:.8}
+.rt-send{width:38px;height:38px;background:var(--blue);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  transition:transform .15s;flex-shrink:0}
+.rt-send:active{transform:scale(.9)}
+/* Tone row — compact, shows only when AI is active */
+.tone-bar{display:none;align-items:center;gap:6px;padding:8px 16px;
+  border-top:.5px solid var(--sep);overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+.tone-bar::-webkit-scrollbar{display:none}
+.tone-bar.show{display:flex}
+.tone-bar-lbl{font-size:12px;color:var(--lbl3);white-space:nowrap}
+.tchip{padding:5px 12px;border-radius:20px;font-size:13px;font-weight:500;white-space:nowrap;cursor:pointer;flex-shrink:0}
+.tchip.on{background:var(--blue);color:#fff}
+.tchip:not(.on){background:var(--fill);color:var(--lbl2)}
+/* Compose body (for new email sheet) */
+.cbody{flex:1;padding:12px 20px;overflow-y:auto;font-size:16px;color:var(--lbl2);line-height:24px;min-height:80px}
+.ctoolbar{display:flex;justify-content:space-between;align-items:center;
+  padding:10px 20px 20px;border-top:.5px solid var(--sep);flex-shrink:0;
+  background:rgba(240,242,245,.92);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+.cticons{display:flex;gap:18px}
+.aiw-btn{display:flex;align-items:center;gap:6px;background:var(--blue-bg);border-radius:18px;
+  padding:8px 14px;border:.5px solid rgba(10,132,255,.25);cursor:pointer;transition:opacity .12s}
+.aiw-btn:active{opacity:.7}
+
+/* ── AI WRITE PANEL (simplified) ── */
+.aiw-ov{position:absolute;inset:0;z-index:90;background:rgba(0,0,0,0);pointer-events:none;
+  transition:background .3s;display:flex;flex-direction:column}
+.aiw-ov.open{background:rgba(0,0,0,.5);pointer-events:all}
+.aiw-sheet{background:var(--bg2);border-radius:24px 24px 0 0;margin-top:auto;
+  transform:translateY(100%);transition:transform .38s cubic-bezier(.32,.72,0,1);
+  display:flex;flex-direction:column;overflow:hidden;border-top:.5px solid var(--sep2);
+  max-height:75%}
+.aiw-ov.open .aiw-sheet{transform:translateY(0)}
+/* Simple header */
+.aiw-hdr2{display:flex;justify-content:space-between;align-items:center;padding:18px 20px 14px;flex-shrink:0}
+.aiw-to-lbl{font-size:13px;color:var(--lbl2)}
+.aiw-to-who{font-size:13px;font-weight:600;color:var(--lbl)}
+.aiw-x{width:28px;height:28px;border-radius:50%;background:var(--fill2);
+  display:flex;align-items:center;justify-content:center;cursor:pointer}
+/* Prompt input area */
+.aiw-prompt-wrap{margin:0 16px 12px;background:var(--bg3);border-radius:14px;
+  padding:14px 14px 8px;flex-shrink:0}
+.aiw-prompt-in{width:100%;font-size:16px;color:var(--lbl);background:none;border:none;outline:none;
+  font-family:inherit;line-height:23px;resize:none;min-height:56px;max-height:120px}
+.aiw-prompt-in::placeholder{color:var(--lbl3)}
+/* Quick intent chips — shown inside prompt wrap */
+.aiw-intents{display:flex;gap:6px;padding:8px 0 4px;overflow-x:auto;scrollbar-width:none}
+.aiw-intents::-webkit-scrollbar{display:none}
+.aint{padding:7px 14px;border-radius:20px;background:var(--fill2);border:.5px solid var(--sep2);
+  font-size:13px;font-weight:500;color:var(--lbl2);white-space:nowrap;cursor:pointer;flex-shrink:0}
+.aint:active{opacity:.7}
+/* Tone — single compact line */
+.aiw-tone-row{display:flex;align-items:center;gap:8px;padding:0 16px 14px;flex-shrink:0;overflow:hidden}
+.aiw-tone-lbl{font-size:13px;color:var(--lbl3);flex-shrink:0}
+.aiw-tones{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+.aiw-tones::-webkit-scrollbar{display:none}
+/* Generate button */
+.aiw-gen{margin:0 16px 16px;padding:16px;background:var(--blue);border-radius:14px;
+  display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;
+  font-size:16px;font-weight:600;color:#fff;flex-shrink:0;transition:opacity .15s}
+.aiw-gen:active{opacity:.8}
+/* Result state — replaces prompt area */
+.aiw-result2{margin:0 16px 12px;border-radius:14px;overflow:hidden;
+  display:none;flex-direction:column;flex-shrink:0}
+.aiw-result2.show{display:flex}
+.aiw-r2-txt{font-size:16px;color:var(--lbl);line-height:24px;padding:14px 14px 10px;
+  background:var(--bg3);border-radius:12px 12px 0 0;flex:1;min-height:80px}
+.aiw-r2-bar{display:flex;gap:8px;padding:10px 14px;background:var(--bg3);
+  border-top:.5px solid var(--sep);border-radius:0 0 12px 12px;align-items:center}
+.aiw-r2-use{flex:1;padding:10px;background:var(--blue);color:#fff;border-radius:10px;
+  font-size:15px;font-weight:600;text-align:center;cursor:pointer;transition:opacity .15s}
+.aiw-r2-use:active{opacity:.8}
+.aiw-r2-re{padding:10px 14px;background:var(--fill2);color:var(--lbl2);border-radius:10px;
+  font-size:14px;font-weight:500;cursor:pointer;transition:opacity .15s;white-space:nowrap}
+.aiw-r2-re:active{opacity:.7}
+/* Segment (kept for compose sheet) */
+.seg{display:flex;background:var(--fill);border-radius:8px;padding:2px;gap:2px}
+.seg-item{padding:5px 12px;border-radius:6px;font-size:13px;font-weight:500;cursor:pointer;color:var(--lbl3)}
+.seg-item.on{background:var(--bg3);color:var(--lbl);box-shadow:0 1px 3px rgba(0,0,0,.3)}
+
+/* Account Sheet */
+.as-inner{background:rgba(28,28,32,.97);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);border-radius:14px 14px 0 0;padding:8px 0 30px;border-top:.5px solid var(--sep2)}
+.as-title{font-size:13px;color:var(--lbl2);text-align:center;padding:8px;font-weight:500}
+.as-row{display:flex;align-items:center;gap:12px;padding:14px 20px;cursor:pointer}
+.as-row:active{background:var(--fill)}
+.sepline{height:.5px;background:var(--sep);margin:4px 0}
+
+/* Action Sheet */
+.act-ov{position:absolute;inset:0;z-index:85;display:flex;flex-direction:column;
+  justify-content:flex-end;background:rgba(0,0,0,0);pointer-events:none;transition:background .3s;padding:0 8px 8px}
+.act-ov.open{background:rgba(0,0,0,.65);pointer-events:all}
+.act-inner{background:rgba(36,36,40,.97);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border-radius:14px;overflow:hidden;transform:translateY(40px);opacity:0;
+  transition:transform .3s cubic-bezier(.32,.72,0,1),opacity .3s;margin-bottom:8px;border:.5px solid var(--sep2)}
+.act-ov.open .act-inner{transform:translateY(0);opacity:1}
+.act-item{padding:16px 20px;font-size:17px;color:var(--lbl);cursor:pointer;border-bottom:.5px solid var(--sep)}
+.act-item:active{background:var(--fill)}
+.act-item:last-child{border-bottom:none}
+.act-item.red{color:var(--red)}
+.act-cancel{background:rgba(36,36,40,.97);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border-radius:14px;overflow:hidden;transform:translateY(40px);opacity:0;
+  transition:transform .3s .04s cubic-bezier(.32,.72,0,1),opacity .3s .04s;border:.5px solid var(--sep2)}
+.act-ov.open .act-cancel{transform:translateY(0);opacity:1}
+.act-cancel-btn{padding:16px 20px;font-size:17px;font-weight:600;color:var(--blue);cursor:pointer;text-align:center}
+.act-cancel-btn:active{background:var(--fill)}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.ecard,.ecrow-wrap{animation:fadeUp .35s ease both}
+.ecard:nth-child(1),.ecrow-wrap:nth-child(1){animation-delay:.04s}
+.ecard:nth-child(2),.ecrow-wrap:nth-child(2){animation-delay:.08s}
+.ecard:nth-child(3),.ecrow-wrap:nth-child(3){animation-delay:.12s}
+.erow-wrap{animation:fadeUp .3s ease both}
+.erow-wrap:nth-child(1){animation-delay:.04s}.erow-wrap:nth-child(2){animation-delay:.08s}
+.erow-wrap:nth-child(3){animation-delay:.12s}.erow-wrap:nth-child(4){animation-delay:.16s}
+.erow-wrap:nth-child(5){animation-delay:.20s}.erow-wrap:nth-child(6){animation-delay:.24s}
+</style>
+</head>
+<body>
+<div class="phone">
+<div class="di"><div class="di-cam"></div><div class="di-mic"></div></div>
+<div class="sbar">
+  <span class="sbar-time">9:41</span>
+  <div class="sbar-icons">
+    <svg width="17" height="12" viewBox="0 0 17 12" fill="currentColor"><rect x="0" y="4" width="3" height="8" rx="1"/><rect x="4.5" y="2.5" width="3" height="9.5" rx="1"/><rect x="9" y="0" width="3" height="12" rx="1"/><rect x="13.5" y="1" width="3" height="11" rx="1" opacity=".3"/></svg>
+    <svg width="16" height="12" viewBox="0 0 24 18" fill="currentColor"><path d="M12 3C15.6 3 18.84 4.56 21.12 7.08L23 5.16C20.2 2.16 16.32.36 12 .36C7.68.36 3.8 2.16 1 5.16L2.88 7.08C5.16 4.56 8.4 3 12 3Z"/><path d="M12 7.8C14.4 7.8 16.56 8.76 18.12 10.32L20 8.4C17.92 6.36 15.12 5.16 12 5.16C8.88 5.16 6.08 6.36 4 8.4L5.88 10.32C7.44 8.76 9.6 7.8 12 7.8Z"/><circle cx="12" cy="15" r="2.5"/></svg>
+    <svg width="25" height="12" viewBox="0 0 25 12" fill="currentColor"><rect x="0" y="1" width="22" height="10" rx="3.5" stroke="currentColor" stroke-width="1.2" fill="none" opacity=".35"/><rect x="23" y="4" width="2" height="4" rx="1" opacity=".4"/><rect x="1.2" y="2.2" width="18" height="7.6" rx="2.5"/></svg>
+  </div>
+</div>
+
+<div class="screens">
+
+<!-- ══════════ TODAY (main) ══════════ -->
+<div class="screen active" id="today">
+  <div class="sc">
+    <div class="today-hdr">
+      <div class="today-meta">
+        <div>
+          
+          <div class="today-title">Today</div>
+          <div style="font-size:14px;color:var(--lbl2);margin-top:3px">Tuesday, March 17</div>
+          
+        </div>
+        <div class="acct-row" onclick="openOverlay('acct-overlay')" style="margin-top:16px;align-self:flex-start">
+          <div class="acct-avs">
+            <div class="acct-av" style="background:#FFF0CC;color:#B07800;z-index:3">H</div>
+            <div class="acct-av" style="background:#4080FF;color:#fff;z-index:2">G</div>
+            <div class="acct-av" style="background:#444;color:#aaa;z-index:1">+</div>
+          </div>
+          <span class="acct-lbl">3 accounts</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="color:var(--lbl3)"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI insight — single subtle line, no card -->
+    <div style="display:flex;align-items:center;gap:5px;padding:2px 24px 22px">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="var(--blue)"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg>
+      <span style="font-size:13px;color:var(--lbl2)">Resolving these 2 unblocks Thursday's all-hands</span>
+    </div>
+
+    <!-- Section: Needs Action -->
+    <div class="sec-hdr">
+      <span class="sec-hdr-ico">⚡</span>
+      <span class="sec-hdr-lbl">Needs Action</span>
+      <span class="sec-hdr-cnt">2</span>
+    </div>
+
+    <div class="ecard" onclick="openDetail(0)">
+      <div class="ecard-accent" style="background:#FF6B35"></div>
+      <div class="ecard-top">
+        <div class="ecard-av-sm" style="background:#3A2A00;color:#FFB340">A</div>
+        <span class="ecard-sender">Alex Chen · Design PM</span>
+        <span class="ecard-time">9:24 AM</span>
+      </div>
+      <div class="ecard-subj">Q1 design review — need your sign-off</div>
+      <div class="ecard-hint">
+        <span class="ecard-hint-ico">✦</span>
+        <span class="ecard-hint-txt">Needs approval on 3 slides before Thursday all-hands</span>
+      </div>
+      <div class="ecard-actions">
+        <div class="ecard-act ecard-act-reply" onclick="event.stopPropagation();openReplyWith('ai')">Approve &amp; Reply ✦</div>
+        <span class="ecard-act-sep">·</span>
+        <div class="ecard-act ecard-act-snooze" onclick="event.stopPropagation()">Snooze</div>
+      </div>
+    </div>
+
+    <div class="ecard" onclick="openDetail(1)" style="margin-top:10px">
+      <div class="ecard-accent" style="background:var(--blue)"></div>
+      <div class="ecard-top">
+        <div class="ecard-av-sm" style="background:#002244;color:#60AEFF">S</div>
+        <span class="ecard-sender">Sarah Kim · Design Lead</span>
+        <span class="ecard-time">8:51 AM</span>
+      </div>
+      <div class="ecard-subj">Thursday design sync — your topic</div>
+      <div class="ecard-hint">
+        <span class="ecard-hint-ico">✦</span>
+        <span class="ecard-hint-txt">Confirm you're ready to present the nav redesign</span>
+      </div>
+      <div class="ecard-actions">
+        <div class="ecard-act ecard-act-reply" onclick="event.stopPropagation();openReplyWith('Confirmed — I\'ll be ready with the nav redesign walkthrough. See you Thursday!')">Confirm ✓</div>
+        <span class="ecard-act-sep">·</span>
+        <div class="ecard-act ecard-act-snooze" onclick="event.stopPropagation()">Snooze</div>
+      </div>
+    </div>
+
+    <!-- Section: Also in Inbox -->
+    <div class="sec-hdr" style="margin-top:20px">
+      <span class="sec-hdr-ico">📥</span>
+      <span class="sec-hdr-lbl">Also in Inbox</span>
+      <span style="font-size:13px;color:var(--blue);cursor:pointer;font-weight:500" onclick="switchTab('inbox')">See all</span>
+    </div>
+    <div style="margin:0 20px 0;background:var(--bg2);border-radius:16px;border:.5px solid var(--sep)">
+      <div style="display:flex;flex-direction:column;gap:0px">
+        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:13px 16px;border-bottom:.5px solid var(--sep)" onclick="openDetail(2)">
+          <div class="av" style="background:#1a1a1a;color:#888;width:28px;height:28px;font-size:11px;flex-shrink:0">G</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:600;color:var(--lbl);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">March changelog</div>
+            <div style="font-size:12px;color:var(--lbl3)">Genspark Engineering</div>
+          </div>
+          <span class="ailbl lbl-fyi" style="flex-shrink:0">FYI</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:13px 16px;border-bottom:.5px solid var(--sep)" onclick="openDetail(3)">
+          <div class="av" style="background:#1a1a1a;color:#888;width:28px;height:28px;font-size:11px;flex-shrink:0">L</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:600;color:var(--lbl)">Q2 budget approved</div>
+            <div style="font-size:12px;color:var(--lbl3)">Linda Tao</div>
+          </div>
+          <span class="ailbl lbl-fyi" style="flex-shrink:0">FYI</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;cursor:pointer;padding:13px 16px" onclick="openDetail(4)">
+          <div class="av" style="background:#2A0044;color:#DA8FFF;width:28px;height:28px;font-size:9px;flex-shrink:0">PH</div>
+          <div style="flex:1;min-width:0">
+            <div style="font-size:14px;font-weight:600;color:var(--lbl)">Top products this week</div>
+            <div style="font-size:12px;color:var(--lbl3)">Product Hunt</div>
+          </div>
+          <span class="ailbl lbl-nl" style="flex-shrink:0">NL</span>
+        </div>
+      </div>
+      <div style="margin-top:12px;padding-top:10px;border-top:.5px solid var(--sep);display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><path d="M21 8v13H3V8M1 3h22v5H1zM10 12h4"/></svg>
+        <span style="font-size:14px;font-weight:500;color:var(--lbl2)">Archive all 19 · done for today</span>
+      </div>
+    </div>
+    <div style="height:100px"></div>
+  </div>
+</div>
+
+<!-- ══════════ INBOX (traditional list) ══════════ -->
+<div class="screen" id="inbox">
+  <div class="sc">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;padding:59px 20px 12px">
+      <div>
+        <div class="ltitle">Inbox</div>
+        <div class="acct-row" onclick="openOverlay('acct-overlay')" style="margin-top:4px">
+          <div class="acct-avs">
+            <div class="acct-av" style="background:#FFF0CC;color:#B07800;z-index:3">H</div>
+            <div class="acct-av" style="background:#4080FF;color:#fff;z-index:2">G</div>
+            <div class="acct-av" style="background:#444;color:#aaa;z-index:1">+</div>
+          </div>
+          <span class="acct-lbl">3 accounts ▾</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;padding-bottom:6px">
+        <div class="nbtn" onclick="openSearch()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg></div>
+        <div class="nbtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg><div class="dot-badge"></div></div>
+      </div>
+    </div>
+    <div class="chips">
+      <div class="chip chip-all">All</div>
+      <div class="chip chip-act"><div class="chip-dot"></div>Needs Action<div class="chip-cnt">4</div></div>
+      <div class="chip chip-fyi">FYI</div>
+      <div class="chip chip-nl">Newsletters</div>
+    </div>
+    <div class="list-sec-hdr">Today</div>
+    <div id="inbox-list">
+      <div class="erow-wrap" id="row0">
+        <div class="erow-actions"><div class="eact eact-arch" onclick="archiveRow(0)">✓<span style="font-size:9px">Archive</span></div><div class="eact eact-snz">🕐<span style="font-size:9px">Snooze</span></div><div class="eact eact-del" onclick="archiveRow(0)">🗑<span style="font-size:9px">Delete</span></div></div>
+        <div class="erow" onclick="openDetail(0)">
+          <div class="udot-row"></div>
+          <div class="av-lg" style="background:#FFF0E6;color:#D4580A">A</div>
+          <div class="erow-body">
+            <div class="erow-top"><span class="esender">Alex Chen</span><span class="etime">9:24</span></div>
+            <div class="esubj">Q1 design review — need your sign-off</div>
+            <div class="eprev">Hi Harry, the final deck is ready for your review...</div>
+          </div>
+        </div>
+      </div>
+      <div class="erow-wrap" id="row1">
+        <div class="erow-actions"><div class="eact eact-arch" onclick="archiveRow(1)">✓<span style="font-size:9px">Archive</span></div><div class="eact eact-snz">🕐<span style="font-size:9px">Snooze</span></div><div class="eact eact-del" onclick="archiveRow(1)">🗑<span style="font-size:9px">Delete</span></div></div>
+        <div class="erow" onclick="openDetail(1)">
+          <div class="udot-row"></div>
+          <div class="av-lg" style="background:#E8EFFF;color:#2855C8">S</div>
+          <div class="erow-body">
+            <div class="erow-top"><span class="esender">Sarah Kim</span><span class="etime">8:51</span></div>
+            <div class="esubj">Thursday design sync — your topic</div>
+            <div class="eprev">You're presenting the nav redesign. Confirm you're ready.</div>
+          </div>
+        </div>
+      </div>
+      <div class="erow-wrap" id="row2">
+        <div class="erow-actions"><div class="eact eact-arch" onclick="archiveRow(2)">✓<span style="font-size:9px">Archive</span></div><div class="eact eact-snz">🕐<span style="font-size:9px">Snooze</span></div><div class="eact eact-del" onclick="archiveRow(2)">🗑<span style="font-size:9px">Delete</span></div></div>
+        <div class="erow" onclick="openDetail(2)">
+          <div class="av-lg" style="background:#EBEBEB;color:#606366;font-size:13px">GE</div>
+          <div class="erow-body">
+            <div class="erow-top"><span class="esender rd">Genspark Engineering</span><span class="etime">8:12</span></div>
+            <div class="esubj rd">March product changelog</div>
+            <div class="eprev">Search ranking v2 shipped, 3 UX improvements...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="list-sec-hdr">Earlier</div>
+    <div>
+      <div class="erow-wrap" id="row3">
+        <div class="erow-actions"><div class="eact eact-arch">✓<span style="font-size:9px">Archive</span></div><div class="eact eact-snz">🕐<span style="font-size:9px">Snooze</span></div><div class="eact eact-del">🗑<span style="font-size:9px">Delete</span></div></div>
+        <div class="erow" onclick="openDetail(3)">
+          <div class="av-lg" style="background:#E8F7F0;color:#059669">L</div>
+          <div class="erow-body">
+            <div class="erow-top"><span class="esender rd">Linda Tao</span><span class="etime">Mon</span></div>
+            <div class="esubj rd">Q2 design tools budget — approved</div>
+            <div class="eprev">$2,400 is available for your tooling stack...</div>
+          </div>
+        </div>
+      </div>
+      <div class="erow-wrap" id="row4">
+        <div class="erow-actions"><div class="eact eact-arch">✓<span style="font-size:9px">Archive</span></div><div class="eact eact-snz">🕐<span style="font-size:9px">Snooze</span></div><div class="eact eact-del">🗑<span style="font-size:9px">Delete</span></div></div>
+        <div class="erow" onclick="openDetail(4)">
+          <div class="av-lg" style="background:#FFF0EE;color:#E04040;font-size:13px">PH</div>
+          <div class="erow-body">
+            <div class="erow-top"><span class="esender rd">Product Hunt</span><span class="etime">Mon</span></div>
+            <div class="esubj rd">Top products this week — AI tools edition</div>
+            <div class="eprev">AI tools, dev tools, Notion alternatives...</div>
+          </div>
+        </div>
+      </div>
+      <div class="erow-wrap" id="row5">
+        <div class="erow-actions"><div class="eact eact-arch">✓<span style="font-size:9px">Archive</span></div><div class="eact eact-snz">🕐<span style="font-size:9px">Snooze</span></div><div class="eact eact-del">🗑<span style="font-size:9px">Delete</span></div></div>
+        <div class="erow" onclick="openDetail(5)">
+          <div class="av-lg" style="background:#EEF3FF;color:#3060C8">M</div>
+          <div class="erow-body">
+            <div class="erow-top"><span class="esender rd">Mike Zhang</span><span class="etime">Sun</span></div>
+            <div class="esubj rd">Figma variables migration — heads up</div>
+            <div class="eprev">Planning the migration next sprint. No action needed.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="height:100px"></div>
+  </div>
+</div>
+
+<!-- ══════════ SEARCH ══════════ -->
+<div class="screen" id="search">
+  <div class="sc" style="bottom:0">
+    <div class="search-bar-row">
+      <div class="si-wrap">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+        <input class="si-input" placeholder="Search mail..." oninput="handleSearch(this.value)" id="searchInput">
+      </div>
+      <span style="font-size:16px;color:var(--blue);cursor:pointer;white-space:nowrap" onclick="closeSearch()">Cancel</span>
+    </div>
+    <div id="search-empty">
+      <div style="padding:8px 20px 6px;font-size:12px;font-weight:600;color:var(--lbl3);letter-spacing:.06em;text-transform:uppercase">Recent</div>
+      <div class="ri" onclick="doSearch('Alex Chen')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span style="font-size:16px;color:var(--lbl)">Alex Chen</span></div>
+      <div class="ri" onclick="doSearch('Q1 review')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span style="font-size:16px;color:var(--lbl)">Q1 review</span></div>
+      <div class="ri" onclick="doSearch('design system')"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg><span style="font-size:16px;color:var(--lbl)">design system</span></div>
+      <div style="padding:16px 20px 8px;font-size:12px;font-weight:600;color:var(--lbl3);letter-spacing:.06em;text-transform:uppercase">AI Search</div>
+      <div class="ai-srchips">
+        <div class="aisrchip" onclick="doSearch('emails needing reply')">Emails needing reply</div>
+        <div class="aisrchip" onclick="doSearch('unread from team')">Unread from team</div>
+        <div class="aisrchip" onclick="doSearch('newsletters')">Newsletters this week</div>
+        <div class="aisrchip" onclick="doSearch('action items')">Action items</div>
+      </div>
+    </div>
+    <div id="search-results" style="display:none">
+      <div style="padding:8px 20px 6px;font-size:12px;font-weight:600;color:var(--lbl3);letter-spacing:.06em;text-transform:uppercase" id="srch-lbl">Results</div>
+      <div class="erow-wrap"><div class="erow" onclick="openDetail(0)"><div class="udot-row"></div><div class="av" style="background:#3A2A00;color:#FFB340">A</div><div style="flex:1;min-width:0"><div style="display:flex;justify-content:space-between;margin-bottom:3px"><span class="esender">Alex Chen</span><span class="etime">9:24</span></div><div class="elbl-row"><span class="ailbl lbl-act">⚡ ACTION</span><span class="esubj">Q1 design review — need your sign-off</span></div><div class="eprev">Hi Harry, the final deck is ready...</div></div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ EMAIL DETAIL ══════════ -->
+<div class="screen" id="detail" style="background:var(--bg2)">
+  <div class="sc" style="bottom:0;background:var(--bg2)">
+    <div class="dnav">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="back" onclick="goBack()"><svg width="9" height="16" viewBox="0 0 9 16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M8 1L1 8L8 15"/></svg> Back</div>
+        <div class="dactions">
+          <div class="dabtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></div>
+          <div class="dabtn" onclick="openOverlay('action-overlay')"><svg width="4" height="16" viewBox="0 0 4 16" fill="currentColor"><circle cx="2" cy="2" r="2"/><circle cx="2" cy="8" r="2"/><circle cx="2" cy="14" r="2"/></svg></div>
+        </div>
+      </div>
+    </div>
+    <div class="dsubj" id="d-subj">Q1 design review — need your sign-off</div>
+    <div class="scard">
+      <div class="scard-l">
+        <div class="av" id="d-av" style="background:#3A2A00;color:#FFB340;width:42px;height:42px;font-size:17px">A</div>
+        <div><div class="sname" id="d-sender">Alex Chen</div><div class="saddr" id="d-addr">alex@genspark.ai → me</div></div>
+      </div>
+      <div class="stime" id="d-time">Today<br>9:24 AM</div>
+    </div>
+    <!-- AI Summary: collapsed trigger → expanded card -->
+    <div class="ai-sum-trigger" id="ai-sum-trigger" onclick="expandAISummary()">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="var(--blue)"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg>
+      <span>Summarize this email</span>
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round" style="margin-left:auto"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="ai-card" id="ai-sum-card" style="display:none">
+      <div class="ai-hdr"><div class="ai-star"><svg width="10" height="10" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg></div><span class="ai-lbl">AI SUMMARY</span>
+        <div class="ai-sum-loading" id="ai-sum-loading" style="display:none;margin-left:8px">
+          <span class="sp-dots"><span>.</span><span>.</span><span>.</span></span>
+        </div>
+      </div>
+      <div class="ai-txt" id="d-ai-sum">Alex wants your approval on the Q1 design deck before Thursday's all-hands. Three slides need your final input on the Design System rollout timeline.</div>
+      <div class="ai-act"><div class="ai-act-lbl">SUGGESTED ACTION</div><div class="ai-act-txt" id="d-ai-action">Reply with approval or feedback by Wednesday 5 PM</div></div>
+    </div>
+    <div class="ebody" id="d-body">
+      <p>Hi Harry,</p>
+      <p>The final Q1 review deck is ready. I wanted to share it with you before we present at the all-hands on Thursday.</p>
+      <p>Specifically, I'd love your sign-off on slides 7, 12, and 15 — those cover the Design System rollout timeline and the mobile-first direction we're proposing.</p>
+      <p>Let me know if you want to jump on a quick call to walk through it.</p>
+      <p style="color:var(--lbl2)">Best,<br>Alex</p>
+    </div>
+    <div class="earlier-msg" onclick="this.innerHTML='<p style=padding:8px;color:var(--lbl2)>Hey Harry, wanted to flag that the slides are almost done. — Alex, 2 days ago</p>'">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      2 earlier messages
+    </div>
+    <div style="height:148px"></div>
+  </div>
+  <!-- Suggested quick replies (inline in scroll, above action bar) -->
+  <div class="sreplies" style="position:absolute;bottom:100px;left:0;right:0">
+    <div class="srchip" onclick="openReplyWith('Looks good, approved ✅')">Looks good ✅</div>
+    <div class="srchip" onclick="openReplyWith('Need more time 🕐')">Need more time 🕐</div>
+    <div class="srchip" onclick="openReplyWith('Let\'s discuss 📅')">Let's discuss 📅</div>
+    <div class="srchip srchip-blue" onclick="openReplyWith('')">Write reply...</div>
+  </div>
+  <!-- Detail action bar — Extra style -->
+  <div class="detail-actions">
+    <div class="dact-reply-pill" onclick="openReplyWith('')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
+      Reply
+    </div>
+    <div class="dact-fwd-btn" onclick="openCompose()">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 17 20 12 15 7"/><path d="M4 18v-2a4 4 0 0 1 4-4h12"/></svg>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ FOCUS ══════════ -->
+<div class="screen" id="focus">
+  <div class="sc">
+    <div style="padding:59px 24px 16px"><div class="ltitle">Focus</div><div style="font-size:15px;color:var(--lbl2);margin-top:4px">AI picked 4 things that need you today</div></div>
+    <div class="ai-brief"><div class="ab-hdr"><svg width="14" height="14" viewBox="0 0 24 24" fill="#32D74B"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg><span class="ab-lbl">DAILY BRIEFING</span></div><div class="ab-txt">You have 2 decisions blocking teammates. Clearing Alex and Sarah unblocks Thursday's all-hands.</div></div>
+    <div class="fc"><div class="fc-hdr"><span class="fc-title">⚡ NEEDS YOUR DECISION</span><span class="fc-badge" style="background:var(--orange-bg);color:#FFB340">2 blocking</span></div>
+      <div class="fi" onclick="openDetail(0)"><div class="av" style="background:#3A2A00;color:#FFB340;width:36px;height:36px;font-size:14px;flex-shrink:0">A</div><div class="fi-r"><div class="fi-top"><span class="fi-sender">Alex Chen</span><span class="fi-time">9:24</span></div><div class="fi-subj">Q1 design review — need your sign-off</div><div class="fi-prev">Blocking: Thursday all-hands presentation</div></div></div>
+      <div class="fi" onclick="openDetail(1)"><div class="av" style="background:#002244;color:#60AEFF;width:36px;height:36px;font-size:14px;flex-shrink:0">S</div><div class="fi-r"><div class="fi-top"><span class="fi-sender">Sarah Kim</span><span class="fi-time">8:51</span></div><div class="fi-subj">Thursday design sync — confirm topic</div><div class="fi-prev">You're presenting in 2 days</div></div></div>
+    </div>
+    <div class="fc"><div class="fc-hdr"><span class="fc-title">💬 NEEDS REPLY</span><span class="fc-badge" style="background:var(--blue-bg);color:#60AEFF">2 waiting</span></div>
+      <div class="fi"><div class="av" style="background:#2A0044;color:#DA8FFF;width:36px;height:36px;font-size:14px;flex-shrink:0">J</div><div class="fi-r"><div class="fi-top"><span class="fi-sender">Jason Park</span><span class="fi-time">Yesterday</span></div><div class="fi-subj">Pricing page copy — final check?</div><div class="fi-prev">Waiting 18 hours for your green light</div></div></div>
+      <div class="fi"><div class="av" style="background:#003020;color:#32D74B;width:36px;height:36px;font-size:14px;flex-shrink:0">R</div><div class="fi-r"><div class="fi-top"><span class="fi-sender">Rachel Liu</span><span class="fi-time">Yesterday</span></div><div class="fi-subj">Onboarding Figma handoff — specs ready</div><div class="fi-prev">Dev-ready, awaiting your review</div></div></div>
+    </div>
+    <div class="fc"><div class="fc-hdr"><span class="fc-title">📬 AI SUMMARIZED</span><span class="fc-badge" style="background:var(--purple-bg);color:#DA8FFF">3 newsletters</span></div><div style="padding:12px 16px"><div style="font-size:14px;color:var(--lbl2);line-height:20px">Product Hunt top 5: Figma token plugin + 2 AI writing tools. Designer News: CSS container queries guide.</div><div style="font-size:13px;color:var(--blue);margin-top:8px;cursor:pointer">Read summaries →</div></div></div>
+    <div style="height:30px"></div>
+  </div>
+</div>
+
+<!-- ══════════ AI AGENT ══════════ -->
+<div class="screen" id="flows">
+  <div style="display:flex;flex-direction:column;height:100%">
+    <!-- Header -->
+    <div style="padding:59px 20px 12px;flex-shrink:0">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between">
+        <div>
+          <div class="ltitle">AI Agent</div>
+          <div style="font-size:14px;color:var(--lbl2);margin-top:3px">Genspark Super Agent</div>
+        </div>
+        <div style="display:flex;gap:8px;padding-bottom:6px">
+          <div class="nbtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+          </div>
+          <div class="nbtn">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Chat messages -->
+    <div class="agent-msgs" id="agent-msgs">
+      <div class="amsg amsg-ai">
+        <div class="aav"><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg></div>
+        <div class="abub abub-ai">Hi Harry 👋 I've scanned your inbox — you have <strong>2 things blocking teammates</strong> today.<br><br>Clearing Alex and Sarah unblocks Thursday's all-hands. How can I help?</div>
+      </div>
+      <div class="amsg amsg-user">
+        <div class="abub abub-user">Summarize my urgent emails</div>
+      </div>
+      <div class="amsg amsg-ai">
+        <div class="aav"><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg></div>
+        <div class="abub abub-ai"><strong>Alex Chen · Design PM</strong> — Needs sign-off on 3 slides in the Q1 deck before Thursday's all-hands. Focus on slides 7, 12, 15.<br><br><strong>Sarah Kim · Design Lead</strong> — Needs you to confirm you're presenting the nav redesign at Thursday's sync.<br><br>Want me to draft a reply for either?</div>
+      </div>
+    </div>
+    <!-- Quick action grid -->
+    <div class="agent-grid">
+      <div class="agent-qcard" onclick="agentPrompt('Draft reply to Alex about the slides')">
+        <svg class="aqc-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        <div class="aqc-txt">Draft reply to Alex</div>
+      </div>
+      <div class="agent-qcard" onclick="agentPrompt('Find all emails needing my reply')">
+        <svg class="aqc-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+        <div class="aqc-txt">Find emails needing reply</div>
+      </div>
+      <div class="agent-qcard" onclick="agentPrompt('Extract all action items from today')">
+        <svg class="aqc-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+        <div class="aqc-txt">Extract action items</div>
+      </div>
+      <div class="agent-qcard" onclick="agentPrompt('Summarize newsletters this week')">
+        <svg class="aqc-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 6h16M4 10h16M4 14h10"/></svg>
+        <div class="aqc-txt">Summarize newsletters</div>
+      </div>
+    </div>
+    <!-- Input bar -->
+    <div class="agent-bar">
+      <div class="agent-in-wrap">
+        <input class="agent-in" id="agent-input" placeholder="Ask anything about your inbox…">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3);flex-shrink:0"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4"/></svg>
+      </div>
+      <div class="agent-send" onclick="agentSend()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13M22 2L15 22l-4-9-9-4 20-7z"/></svg>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ ME ══════════ -->
+<div class="screen" id="me">
+  <div class="sc">
+    <div style="padding:59px 24px 20px"><div class="ltitle">Me</div></div>
+    <div class="me-section"><div class="me-stitle">Accounts</div><div class="me-card">
+      <div class="me-row"><div class="me-ric" style="background:#3A2A00">H</div><div style="flex:1"><div class="me-txt">Harry Chang</div><div style="font-size:13px;color:var(--lbl3)">harry@mainfunc.ai · Primary</div></div><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+      <div class="me-row"><div class="me-ric" style="background:#003060">G</div><div style="flex:1"><div class="me-txt">Genspark Work</div><div style="font-size:13px;color:var(--lbl3)">harry@genspark.ai</div></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><path d="M9 18l6-6-6-6"/></svg></div>
+      <div class="me-row"><div class="me-ric" style="background:#003020">G</div><div style="flex:1"><div class="me-txt">Gmail</div><div style="font-size:13px;color:var(--lbl3)">changhailongart@gmail.com</div></div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><path d="M9 18l6-6-6-6"/></svg></div>
+      <div class="me-row"><div class="me-ric" style="background:var(--fill);font-size:20px">+</div><div class="me-txt" style="color:var(--blue)">Add Account</div></div>
+    </div></div>
+    <div class="me-section"><div class="me-stitle">AI Preferences</div><div class="me-card">
+      <div class="me-row"><div class="me-ric" style="background:var(--blue-bg)">🤖</div><div class="me-txt" style="flex:1">Auto-summarize emails</div><div class="me-tog" onclick="this.classList.toggle('off')"></div></div>
+      <div class="me-row"><div class="me-ric" style="background:var(--green-bg)">💬</div><div class="me-txt" style="flex:1">Show Suggested Replies</div><div class="me-tog" onclick="this.classList.toggle('off')"></div></div>
+      <div class="me-row"><div class="me-ric" style="background:var(--orange-bg)">⚡</div><div class="me-txt" style="flex:1">Auto-label with AI</div><div class="me-tog" onclick="this.classList.toggle('off')"></div></div>
+      <div class="me-row"><div class="me-ric" style="background:var(--purple-bg)">⭐</div><div class="me-txt" style="flex:1">Daily Focus Briefing</div><div class="me-tog" onclick="this.classList.toggle('off')"></div></div>
+    </div></div>
+    <div class="me-section"><div class="me-stitle">Notifications</div><div class="me-card">
+      <div class="me-row"><div class="me-ric" style="background:var(--orange-bg)">🔔</div><div class="me-txt" style="flex:1">ACTION emails only</div><div class="me-right">On</div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><path d="M9 18l6-6-6-6"/></svg></div>
+      <div class="me-row"><div class="me-ric" style="background:var(--fill)">🔊</div><div class="me-txt" style="flex:1">Sound &amp; Haptics</div><div class="me-right">On</div><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div></div>
+    <div class="me-section"><div class="me-stitle">Appearance</div><div class="me-card">
+      <div class="me-row"><div class="me-ric" style="background:var(--fill)">☀️</div><div class="me-txt" style="flex:1">Light Mode</div><div style="font-size:13px;color:var(--lbl3)">Always on</div></div>
+    </div></div>
+    <div class="me-section"><div class="me-card"><div class="me-row" style="justify-content:center"><div style="font-size:16px;color:var(--red)">Sign out of all accounts</div></div></div></div>
+    <div style="height:20px"></div>
+  </div>
+</div>
+
+</div><!-- /screens -->
+
+<!-- ══════════ TAB BAR ══════════ -->
+<div class="tabbar" id="tabbar">
+  <div class="ti on" id="ti-today" onclick="switchTab('today')">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><circle cx="12" cy="16" r="1.5" fill="currentColor"/></svg>
+    <span class="ti-lbl">Today</span>
+  </div>
+  <div class="ti" id="ti-inbox" onclick="switchTab('inbox')">
+    <svg width="20" height="18" viewBox="0 0 24 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="2" width="20" height="16" rx="3"/><path d="M22 7l-10 7L2 7"/></svg>
+    <span class="ti-lbl">Inbox</span>
+  </div>
+</div>
+
+<!-- ══════════ OVERLAYS ══════════ -->
+
+<!-- Reply Sheet — Extra style full compose -->
+<div class="overlay" id="reply-overlay" onclick="overlayTap(event,'reply-overlay')">
+  <div class="ex-compose-sheet">
+    <!-- Top nav -->
+    <div class="ex-compose-nav">
+      <div class="ex-compose-close" onclick="closeOverlay('reply-overlay')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </div>
+      <div class="ex-compose-ctx">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="color:var(--lbl3)"><polyline points="9 17 4 12 9 7"/><path d="M20 18v-2a4 4 0 0 0-4-4H4"/></svg>
+        <span id="reply-to" style="font-size:14px;color:var(--lbl2)">Alex Chen</span>
+      </div>
+      <div class="ex-compose-attach">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl2)"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+      </div>
+      <div class="ex-compose-send" onclick="closeOverlay('reply-overlay')">Send</div>
+    </div>
+    <!-- Subject -->
+    <div class="ex-compose-subj" id="ex-reply-subj">Re: Q1 design review — need your sign-off</div>
+    <!-- Compose area -->
+    <div class="ex-compose-body">
+      <div class="ai-suggested-tag" id="ai-tag" style="margin-bottom:8px">
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="var(--blue)"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg>
+        AI suggested · tap to edit
+      </div>
+      <textarea class="ex-compose-in" id="reply-body" placeholder="Tap to write your reply..."></textarea>
+      <div class="ex-via">Sent via <span style="color:#7B3FF2;font-weight:500">Genspark</span></div>
+    </div>
+    <!-- Hold to Speak button (inline, no modal) -->
+    <div class="ex-hts-row">
+      <div class="ex-hts-btn" id="hts-btn" onclick="htsToggle()">
+        <!-- Idle state -->
+        <div class="hts-idle" id="hts-idle">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>
+          <span>Hold to Speak</span>
+        </div>
+        <!-- Listening state: waveform inside button -->
+        <div class="hts-listening" id="hts-listening" style="display:none">
+          <div class="hts-wave-inner">
+            <div class="hts-bar"></div><div class="hts-bar"></div>
+            <div class="hts-bar"></div><div class="hts-bar"></div>
+            <div class="hts-bar"></div><div class="hts-bar"></div>
+            <div class="hts-bar"></div><div class="hts-bar"></div>
+          </div>
+          <span>Listening...</span>
+        </div>
+        <!-- Writing state -->
+        <div class="hts-writing" id="hts-writing" style="display:none">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg>
+          <span>Writing your email</span>
+          <span class="hts-dots"><span>.</span><span>.</span><span>.</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Compose Sheet -->
+<div class="overlay" id="compose-overlay" onclick="overlayTap(event,'compose-overlay')">
+  <div class="sheet" style="height:88%">
+    <div class="shdl"></div>
+    <div class="shdr-row"><span class="sh-cancel" onclick="closeOverlay('compose-overlay')">Cancel</span><span class="sh-title">New Message</span><span class="sh-send">Send</span></div>
+    <div class="cfield"><span class="cflbl" style="color:var(--lbl2)">From</span><span class="cfval">harry@mainfunc.ai</span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><path d="M6 9l6 6 6-6"/></svg></div>
+    <div class="cfield"><span class="cflbl">To</span><span class="cfval" style="color:var(--lbl3)">Recipients...</span></div>
+    <div class="cfield" style="cursor:pointer"><span style="font-size:16px;color:var(--blue)">Cc/Bcc</span></div>
+    <div class="cfield"><span class="cflbl">Sub</span><span class="cfval" style="color:var(--lbl3)">Subject</span></div>
+    <div class="cbody">Type your message or use AI to write...</div>
+    <div class="ctoolbar">
+      <div class="cticons">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+      </div>
+      <div class="aiw-btn" onclick="openOverlay('aiwrite-overlay')"><svg width="13" height="13" viewBox="0 0 24 24" fill="var(--blue)"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg><span style="font-size:13px;font-weight:600;color:var(--blue)">Write with AI</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SPEAKLY OVERLAY ══════════ -->
+<div class="speakly-ov" id="speakly-overlay">
+  <div class="speakly-sheet">
+    <div class="shdl"></div>
+    <div class="speakly-logo">Speakly</div>
+    <div class="speakly-mic-wrap" id="sp-mic-wrap" onclick="speaklyToggle()">
+      <div class="speakly-ring" id="sp-ring1"></div>
+      <div class="speakly-ring2" id="sp-ring2"></div>
+      <div class="speakly-mic-btn">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>
+      </div>
+    </div>
+    <div class="speakly-status" id="sp-status">Listening...</div>
+    <div class="speakly-wave" id="sp-wave">
+      <div class="speakly-bar"></div><div class="speakly-bar"></div>
+      <div class="speakly-bar"></div><div class="speakly-bar"></div>
+      <div class="speakly-bar"></div><div class="speakly-bar"></div>
+      <div class="speakly-bar"></div><div class="speakly-bar"></div>
+      <div class="speakly-bar"></div><div class="speakly-bar"></div>
+      <div class="speakly-bar"></div><div class="speakly-bar"></div>
+    </div>
+    <!-- AI composing row (shown between listening and result) -->
+    <div class="sp-compose-row" id="sp-compose-row" style="display:none">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="#BF5AF2"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg>
+      <span class="sp-compose-txt">AI is writing your email</span>
+      <span class="sp-dots"><span>.</span><span>.</span><span>.</span></span>
+    </div>
+    <div class="speakly-preview" id="sp-preview"></div>
+    <button class="speakly-done" id="sp-done" onclick="speaklyDone()" style="display:none">Use this reply</button>
+    <div class="speakly-cancel" onclick="closeSpeakly()">Cancel</div>
+  </div>
+</div>
+
+<!-- AI Write Panel (simplified) -->
+<div class="aiw-ov" id="aiwrite-overlay" onclick="if(event.target===this)closeOverlay('aiwrite-overlay')">
+  <div class="aiw-sheet">
+    <div class="shdl"></div>
+    <!-- Simple header -->
+    <div class="aiw-hdr2">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div style="width:32px;height:32px;border-radius:10px;background:linear-gradient(135deg,var(--blue),#5E5CE6);display:flex;align-items:center;justify-content:center;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg>
+        </div>
+        <div>
+          <div style="font-size:17px;font-weight:700;color:var(--lbl)">Write with AI</div>
+          <div class="aiw-to-lbl">Replying to <span class="aiw-to-who" id="aiw-to-name">Alex Chen</span></div>
+        </div>
+      </div>
+      <div class="aiw-x" onclick="closeOverlay('aiwrite-overlay')">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </div>
+    </div>
+    <!-- Prompt input + quick intents -->
+    <div class="aiw-prompt-wrap" id="aiw-input-area">
+      <textarea class="aiw-prompt-in" id="aiw-prompt" placeholder="What do you want to say?&#10;e.g. Approve all slides, keep timeline to 2 phases" rows="3"></textarea>
+      <div class="aiw-intents">
+        <div class="aint" onclick="setPrompt('Approve with positive notes')">👍 Approve it</div>
+        <div class="aint" onclick="setPrompt('I need more time to review')">⏳ Need more time</div>
+        <div class="aint" onclick="setPrompt('Let\'s jump on a quick call to discuss')">📅 Suggest a call</div>
+      </div>
+    </div>
+    <!-- Tone — single compact line -->
+    <div class="aiw-tone-row">
+      <span class="aiw-tone-lbl">Tone</span>
+      <div class="aiw-tones">
+        <div class="tchip on" onclick="setToneChip(this,'aiw-tones-wrap')">Concise</div>
+        <div class="tchip" onclick="setToneChip(this,'aiw-tones-wrap')">Professional</div>
+        <div class="tchip" onclick="setToneChip(this,'aiw-tones-wrap')">Friendly</div>
+        <div class="tchip" onclick="setToneChip(this,'aiw-tones-wrap')">Formal</div>
+      </div>
+    </div>
+    <!-- Generate button -->
+    <div class="aiw-gen" id="aiw-gen-btn" onclick="generateAI2()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg>
+      Generate
+    </div>
+    <!-- Result area -->
+    <div class="aiw-result2" id="aiw-result2">
+      <div class="aiw-r2-txt" id="aiw-r2-txt"></div>
+      <div class="aiw-r2-bar">
+        <div class="aiw-r2-use" onclick="useAIResult2()">Use this</div>
+        <div class="aiw-r2-re" onclick="generateAI2()">↺ Regenerate</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Account Sheet -->
+<div class="overlay" id="acct-overlay" onclick="overlayTap(event,'acct-overlay')">
+  <div class="sheet"><div class="as-inner">
+    <div class="as-title">Switch Account</div><div class="sepline"></div>
+    <div class="as-row"><div class="av" style="background:#3A2A00;color:#FFB340;width:40px;height:40px">H</div><div style="flex:1"><div style="font-size:16px;font-weight:500;color:var(--lbl)">Harry Chang</div><div style="font-size:13px;color:var(--lbl2)">harry@mainfunc.ai</div></div><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-linecap="round"><path d="M20 6L9 17l-5-5"/></svg></div>
+    <div class="as-row"><div class="av" style="background:#003060;color:#60AEFF;width:40px;height:40px">G</div><div style="flex:1"><div style="font-size:16px;font-weight:500;color:var(--lbl)">Genspark Work</div><div style="font-size:13px;color:var(--lbl2)">harry@genspark.ai</div></div></div>
+    <div class="as-row"><div class="av" style="background:#003020;color:#32D74B;width:40px;height:40px;font-size:13px">Gm</div><div style="flex:1"><div style="font-size:16px;font-weight:500;color:var(--lbl)">Gmail</div><div style="font-size:13px;color:var(--lbl2)">changhailongart@gmail.com</div></div></div>
+    <div class="sepline"></div>
+    <div class="as-row"><div class="av" style="background:var(--fill);color:var(--lbl2);font-size:20px;width:40px;height:40px">+</div><div style="font-size:16px;font-weight:500;color:var(--blue)">Add Account</div></div>
+  </div></div>
+</div>
+
+<!-- Action Sheet -->
+<div class="act-ov" id="action-overlay" onclick="if(event.target===this)closeOverlay('action-overlay')">
+  <div class="act-inner">
+    <div class="act-item" onclick="openReplyWith('ai');closeOverlay('action-overlay')">Reply</div>
+    <div class="act-item" onclick="closeOverlay('action-overlay')">Reply All</div>
+    <div class="act-item" onclick="closeOverlay('action-overlay')">Forward</div>
+    <div class="act-item" onclick="closeOverlay('action-overlay')">Mark as Unread</div>
+    <div class="act-item" onclick="closeOverlay('action-overlay')">Move to...</div>
+    <div class="act-item" onclick="goBack();closeOverlay('action-overlay')">Archive</div>
+    <div class="act-item red" onclick="goBack();closeOverlay('action-overlay')">Delete</div>
+  </div>
+  <div class="act-cancel"><div class="act-cancel-btn" onclick="closeOverlay('action-overlay')">Cancel</div></div>
+</div>
+
+<script>
+const emails=[
+  {s:'Alex Chen',av:'A',bg:'#3A2A00',c:'#FFB340',subj:'Q1 design review — need your sign-off',addr:'alex@genspark.ai',time:'Today\n9:24 AM',sum:'Alex wants your approval on the Q1 design deck before Thursday\'s all-hands. Three slides need your final input.',act:'Reply with approval or feedback by Wednesday 5 PM'},
+  {s:'Sarah Kim',av:'S',bg:'#002244',c:'#60AEFF',subj:'Thursday design sync — your topic',addr:'sarah@genspark.ai',time:'Today\n8:51 AM',sum:'Sarah is confirming your topic for Thursday\'s design sync. You need to confirm readiness to present.',act:'Confirm your attendance and topic by EOD today'},
+  {s:'Genspark Engineering',av:'G',bg:'#1a1a1a',c:'#888',subj:'March product changelog is live',addr:'eng@genspark.ai',time:'Today\n8:12 AM',sum:'March changelog published: search ranking v2, agent routing fix, 3 UX improvements relevant to your design work.',act:'No action required — for awareness only'},
+  {s:'Linda Tao',av:'L',bg:'#1a1a1a',c:'#888',subj:'Budget approved for Q2 design tools',addr:'linda@genspark.ai',time:'Mon\n2:30 PM',sum:'The $2,400 Q2 design tools budget has been approved.',act:'Submit purchase requests before April 1st'},
+  {s:'Product Hunt Digest',av:'PH',bg:'#2A0044',c:'#DA8FFF',subj:'Top products this week',addr:'digest@producthunt.com',time:'Mon\n9:00 AM',sum:'Top 5: Figma token plugin, 2 AI writing tools. Designer News: CSS container queries guide.',act:'No action required'},
+  {s:'Mike Zhang',av:'M',bg:'#002244',c:'#60AEFF',subj:'Figma variables migration — heads up',addr:'mike@genspark.ai',time:'Sun\n5:15 PM',sum:'Engineering is planning a Figma variables migration next sprint and wants design input on naming.',act:'Share preferred token naming convention by Friday'}
+];
+
+let activeTab='today',screenStack=[];
+
+function switchTab(tab){
+  if(document.getElementById('detail').classList.contains('active'))hideDetail();
+  if(document.getElementById('search').classList.contains('active'))closeSearch();
+  ['today','inbox','focus','flows','me'].forEach(t=>{
+    const s=document.getElementById(t);
+    const ti=document.getElementById('ti-'+t);
+    if(t===tab){s.classList.add('active');s.style.transform='translateX(0)';if(ti)ti.classList.add('on');}
+    else{s.classList.remove('active');s.style.transform='translateX(100%)';if(ti)ti.classList.remove('on');}
+  });
+  activeTab=tab;
+}
+
+function openDetail(idx){
+  const e=emails[idx]||emails[0];
+  document.getElementById('d-subj').textContent=e.subj;
+  document.getElementById('d-sender').textContent=e.s;
+  document.getElementById('d-addr').textContent=e.addr+' → me';
+  document.getElementById('d-time').innerHTML=e.time.replace('\n','<br>');
+  document.getElementById('d-ai-sum').textContent=e.sum;
+  document.getElementById('d-ai-action').textContent=e.act;
+  const av=document.getElementById('d-av');
+  av.textContent=e.av;av.style.background=e.bg;av.style.color=e.c;
+  document.getElementById('reply-to').textContent=e.s;
+  const aiw=document.getElementById('aiw-to-name');if(aiw)aiw.textContent=e.s;
+
+  document.getElementById(activeTab).style.transform='translateX(-25%)';
+  const d=document.getElementById('detail');
+  d.style.transition='none';d.style.transform='translateX(100%)';
+  d.offsetHeight;d.style.transition='';
+  d.classList.add('active');d.style.transform='translateX(0)';
+  d.querySelector('.sc').scrollTop=0;
+  document.getElementById('tabbar').style.opacity='0';
+  document.getElementById('tabbar').style.pointerEvents='none';
+  screenStack.push(activeTab);
+}
+function hideDetail(){
+  const d=document.getElementById('detail');
+  d.classList.remove('active');d.style.transform='translateX(100%)';
+  document.getElementById('tabbar').style.opacity='1';
+  document.getElementById('tabbar').style.pointerEvents='all';
+}
+function goBack(){
+  const prev=screenStack.pop()||activeTab;
+  hideDetail();
+  document.getElementById(prev).style.transform='translateX(0)';
+}
+function openSearch(){
+  const s=document.getElementById('search');
+  s.style.transition='none';s.style.transform='translateX(100%)';s.offsetHeight;s.style.transition='';
+  s.classList.add('active');s.style.transform='translateX(0)';
+  document.getElementById(activeTab).style.transform='translateX(-25%)';
+  document.getElementById('tabbar').style.opacity='0';
+  document.getElementById('tabbar').style.pointerEvents='none';
+  setTimeout(()=>document.getElementById('searchInput').focus(),420);
+}
+function closeSearch(){
+  document.getElementById('search').classList.remove('active');
+  document.getElementById('search').style.transform='translateX(100%)';
+  document.getElementById(activeTab).style.transform='translateX(0)';
+  document.getElementById('tabbar').style.opacity='1';
+  document.getElementById('tabbar').style.pointerEvents='all';
+}
+function handleSearch(v){
+  document.getElementById('search-empty').style.display=v?'none':'block';
+  document.getElementById('search-results').style.display=v?'block':'none';
+  if(v)document.getElementById('srch-lbl').textContent='Results for "'+v+'"';
+}
+function doSearch(q){document.getElementById('searchInput').value=q;handleSearch(q);}
+
+function openOverlay(id){
+  document.getElementById(id).classList.add('open');
+  if(id==='aiwrite-overlay'){
+    // reset AI write state
+    const r=document.getElementById('aiw-result2');
+    const ia=document.getElementById('aiw-input-area');
+    const btn=document.getElementById('aiw-gen-btn');
+    if(r)r.classList.remove('show');
+    if(ia)ia.style.display='';
+    if(btn){btn.style.display='';btn.style.opacity='1';btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg> Generate';}
+    const prompt=document.getElementById('aiw-prompt');
+    if(prompt)prompt.value='';
+  }
+}
+function closeOverlay(id){document.getElementById(id).classList.remove('open');}
+function overlayTap(e,id){if(e.target===document.getElementById(id))closeOverlay(id);}
+function openCompose(){openOverlay('compose-overlay');}
+function expandAISummary(){
+  const trigger=document.getElementById('ai-sum-trigger');
+  const card=document.getElementById('ai-sum-card');
+  const loading=document.getElementById('ai-sum-loading');
+  if(!trigger||!card)return;
+  trigger.style.display='none';
+  card.style.display='block';
+  // Simulate brief loading
+  const txt=document.getElementById('d-ai-sum');
+  const act=document.getElementById('d-ai-action');
+  const origTxt=txt.textContent;const origAct=act.textContent;
+  txt.textContent='';act.closest('.ai-act').style.display='none';
+  if(loading)loading.style.display='inline-flex';
+  setTimeout(()=>{
+    if(loading)loading.style.display='none';
+    txt.textContent=origTxt;
+    act.closest('.ai-act').style.display='block';
+  },900);
+}
+
+function openReplyWith(text){
+  const body=document.getElementById('reply-body');
+  const tag=document.getElementById('ai-tag');
+  // reset HTS state
+  htsReset();
+  body.value='';tag.classList.remove('show');
+  openOverlay('reply-overlay');
+  // Update subject line for detail
+  const subj=document.getElementById('ex-reply-subj');
+  if(subj&&window._currentEmail){
+    subj.textContent='Re: '+window._currentEmail.subj;
+  }
+  if(text==='ai'){
+    setTimeout(()=>quickAIDraft(),200);
+  } else if(text){
+    body.value=text;
+  }
+}
+
+// ── HOLD TO SPEAK (inline compose) ──
+let htsTimers=[], htsPhase='idle', htsCharIdx=0, htsTypeInterval=null;
+
+function htsSetState(state){
+  document.getElementById('hts-idle').style.display   = state==='idle'      ? 'flex':'none';
+  document.getElementById('hts-listening').style.display = state==='listening' ? 'flex':'none';
+  document.getElementById('hts-writing').style.display   = state==='writing'   ? 'flex':'none';
+}
+
+function htsReset(){
+  htsTimers.forEach(t=>clearTimeout(t));htsTimers=[];
+  clearInterval(htsTypeInterval);htsTypeInterval=null;
+  htsPhase='idle';
+  htsSetState('idle');
+}
+
+function htsToggle(){
+  if(htsPhase==='idle'){
+    htsPhase='listening';
+    htsSetState('listening');
+    document.getElementById('reply-body').value='';
+    const fullText=speaklyAIReplies[spIdx%speaklyAIReplies.length];
+    // After short listen delay, switch to writing and stream
+    const t=setTimeout(()=>{
+      htsPhase='writing';
+      htsSetState('writing');
+      let idx=0;
+      htsTypeInterval=setInterval(()=>{
+        if(idx>=fullText.length){
+          clearInterval(htsTypeInterval);htsTypeInterval=null;
+          htsPhase='done';
+          htsSetState('idle');
+          const tag=document.getElementById('ai-tag');
+          if(tag)tag.classList.add('show');
+          return;
+        }
+        const body=document.getElementById('reply-body');
+        body.value=fullText.substring(0,++idx);
+        body.scrollTop=body.scrollHeight;
+      },22);
+    },1200);
+    htsTimers.push(t);
+  } else if(htsPhase==='listening'||htsPhase==='writing'){
+    // Tap to skip → fill immediately
+    clearInterval(htsTypeInterval);htsTypeInterval=null;
+    htsTimers.forEach(t=>clearTimeout(t));htsTimers=[];
+    const fullText=speaklyAIReplies[spIdx%speaklyAIReplies.length];
+    document.getElementById('reply-body').value=fullText;
+    htsPhase='done';
+    htsSetState('idle');
+    const tag=document.getElementById('ai-tag');
+    if(tag)tag.classList.add('show');
+  } else if(htsPhase==='done'){
+    spIdx++;htsReset();htsToggle();
+  }
+}
+// ── AI DRAFT TEXTS ──
+const aiDrafts=[
+  "Hi Alex, looks great — slides 7, 12, and 15 are all approved. One note on slide 12: let's keep the rollout timeline to two phases for the all-hands. See you Thursday! 👍",
+  "Hi Alex, the deck is approved. Quick suggestion: on slide 12, consider simplifying the timeline to two phases — it'll land better with a broader audience. Looking forward to Thursday!",
+  "Thanks Alex! All approved. One thought on slide 12 — condensing the timeline to two phases would make it cleaner. Can't wait for Thursday 🎉"
+];
+let aiIdx=0;
+
+// ── SPEAKLY REALTIME ──
+const speaklyAIReplies=[
+  "Hi Alex,\n\nI've reviewed the deck — all three slides look great. Approved on my end!\n\nQuick note on slide 12: the rollout timeline is solid, though simplifying it to two phases might land better with the broader all-hands audience.\n\nSee you Thursday! 👍",
+  "Hey Alex,\n\nEverything checks out — slides 7, 12, and 15 all get the green light.\n\nOne small thought: a slightly tighter timeline on slide 12 could sharpen the message before Thursday. Not a blocker though — we're good to go!",
+  "Hi Alex,\n\nApproved! The deck is in great shape. Only suggestion: consider condensing the timeline on slide 12 to two phases — it'll be easier for the all-hands audience to follow.\n\nLooking forward to Thursday 🙌"
+];
+let spIdx=0, spTimers=[], spPhase='idle', spCharIdx=0, spTypeInterval=null;
+
+function openSpeakly(){
+  document.getElementById('speakly-overlay').classList.add('open');
+  speaklyReset();
+  speaklyStartRealtime();
+}
+
+function speaklyReset(){
+  spTimers.forEach(t=>clearTimeout(t));spTimers=[];
+  clearInterval(spTypeInterval);spTypeInterval=null;
+  spCharIdx=0;spPhase='idle';
+  const preview=document.getElementById('sp-preview');
+  preview.innerHTML='';preview.classList.remove('show');
+  document.getElementById('sp-status').textContent='Listening...';
+  document.getElementById('sp-wave').style.display='flex';
+  document.getElementById('sp-compose-row').style.display='none';
+  document.getElementById('sp-done').style.display='none';
+  document.getElementById('sp-mic-wrap').style.opacity='1';
+}
+
+function speaklyStartRealtime(){
+  spPhase='streaming';
+  const preview=document.getElementById('sp-preview');
+  const fullText=speaklyAIReplies[spIdx%speaklyAIReplies.length];
+  preview.innerHTML='<span class="sp-cursor">|</span>';
+  preview.classList.add('show');
+  // Start streaming after a short pause (mic latency feel)
+  const startDelay=spTimers.push(setTimeout(()=>{
+    document.getElementById('sp-status').textContent='';
+    spCharIdx=0;
+    spTypeInterval=setInterval(()=>{
+      if(spCharIdx>=fullText.length){
+        clearInterval(spTypeInterval);spTypeInterval=null;
+        spPhase='done';
+        // Remove cursor, stop waveform
+        document.getElementById('sp-wave').style.display='none';
+        document.getElementById('sp-status').textContent='Tap mic to re-record';
+        document.getElementById('sp-done').style.display='block';
+        const cur=preview.querySelector('.sp-cursor');if(cur)cur.remove();
+        return;
+      }
+      const char=fullText[spCharIdx++];
+      const cur=preview.querySelector('.sp-cursor');
+      if(cur) cur.insertAdjacentText('beforebegin', char=== '\n' ? '' : char);
+      if(char==='\n'){const br=document.createElement('br');if(cur)cur.before(br);}
+    }, char_delay(spCharIdx, fullText));
+  },600));
+}
+
+// Variable speed: fast for middle, slight pause at punctuation
+function char_delay(i, text){
+  const c=text[Math.min(i,text.length-1)];
+  if(c==='.'||c==='!'||c==='\n') return 60;
+  if(c===','||c===';') return 40;
+  return 22;
+}
+
+function speaklyToggle(){
+  if(spPhase==='streaming'){
+    // Skip to end immediately
+    clearInterval(spTypeInterval);spTypeInterval=null;
+    spTimers.forEach(t=>clearTimeout(t));spTimers=[];
+    const preview=document.getElementById('sp-preview');
+    const fullText=speaklyAIReplies[spIdx%speaklyAIReplies.length];
+    preview.innerHTML='';
+    fullText.split('\n').forEach((line,i,arr)=>{
+      preview.appendChild(document.createTextNode(line));
+      if(i<arr.length-1)preview.appendChild(document.createElement('br'));
+    });
+    spPhase='done';
+    document.getElementById('sp-wave').style.display='none';
+    document.getElementById('sp-status').textContent='Tap mic to re-record';
+    document.getElementById('sp-done').style.display='block';
+  } else if(spPhase==='done'){
+    // Re-record
+    spIdx++;speaklyReset();speaklyStartRealtime();
+  }
+}
+
+function speaklyDone(){
+  const preview=document.getElementById('sp-preview');
+  // Get plain text (strip cursor)
+  const cur=preview.querySelector('.sp-cursor');if(cur)cur.remove();
+  const text=preview.innerText||preview.textContent;
+  const body=document.getElementById('reply-body');
+  if(text.trim()){
+    body.value=text.trim();
+    const tag=document.getElementById('ai-tag');
+    if(tag) tag.classList.add('show');
+  }
+  closeSpeakly();
+}
+function closeSpeakly(){
+  spTimers.forEach(t=>clearTimeout(t));spTimers=[];
+  clearInterval(spTypeInterval);spTypeInterval=null;
+  spPhase='idle';
+  document.getElementById('speakly-overlay').classList.remove('open');
+}
+
+// New: quick AI draft fills the reply textarea (kept for compose use)
+function quickAIDraft(){
+  const body=document.getElementById('reply-body');
+  const tag=document.getElementById('ai-tag');
+  body.value='✦ Drafting...';
+  body.disabled=true;
+  setTimeout(()=>{
+    body.value=aiDrafts[aiIdx%aiDrafts.length];aiIdx++;
+    body.disabled=false;
+    tag.classList.add('show');
+  },900);
+}
+
+// New AI Write panel generator
+function generateAI2(){
+  const btn=document.getElementById('aiw-gen-btn');
+  const result=document.getElementById('aiw-result2');
+  const txt=document.getElementById('aiw-r2-txt');
+  const inputArea=document.getElementById('aiw-input-area');
+  result.classList.remove('show');
+  btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg> Generating...';
+  btn.style.opacity='.7';
+  setTimeout(()=>{
+    txt.textContent=aiDrafts[aiIdx%aiDrafts.length];aiIdx++;
+    result.classList.add('show');
+    inputArea.style.display='none';
+    btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg> Generate';
+    btn.style.opacity='1';
+    btn.style.display='none';
+  },1100);
+}
+
+function useAIResult2(){
+  const txt=document.getElementById('aiw-r2-txt').textContent;
+  document.getElementById('reply-body').value=txt;
+  document.getElementById('ai-tag').classList.add('show');
+  document.getElementById('reply-tone-bar').classList.add('show');
+  closeOverlay('aiwrite-overlay');
+}
+
+function setPrompt(txt){
+  const el=document.getElementById('aiw-prompt');
+  if(el){el.value=txt;el.focus();}
+}
+
+function setToneChip(el,parentSel){
+  const parent=el.closest('.tone-bar')||el.closest('.aiw-tone-row')||el.closest('.aiw-tones');
+  if(parent)parent.querySelectorAll('.tchip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+}
+function setSeg(el){el.closest('.seg').querySelectorAll('.seg-item').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
+
+// Swipe on email rows
+function initSwipe(){
+  document.querySelectorAll('.erow-wrap').forEach(wrap=>{
+    const row=wrap.querySelector('.erow');
+    if(!row)return;
+    const acts=wrap.querySelector('.erow-actions');
+    const W=180;let sx,sy,cx=0,sw=false,dl=false,ih=false;
+    function start(x,y){sx=x;sy=y;sw=true;dl=false;ih=false;}
+    function move(x,y){
+      if(!sw)return;
+      const dx=x-sx,dy=y-sy;
+      if(!dl){if(Math.abs(dx)>6||Math.abs(dy)>6){ih=Math.abs(dx)>Math.abs(dy);dl=true;}}
+      if(!ih)return;
+      const tx=Math.max(-W,Math.min(0,dx+cx));
+      row.style.transform='translateX('+tx+'px)';
+      if(acts)acts.style.opacity=Math.min(1,Math.abs(tx)/60);
+    }
+    function end(x){
+      if(!sw||!ih){sw=false;return;}sw=false;
+      const dx=x-sx+cx;
+      if(dx<-60){row.style.transform='translateX(-'+W+'px)';cx=-W;}
+      else{row.style.transform='translateX(0)';cx=0;if(acts)acts.style.opacity=0;}
+    }
+    row.addEventListener('touchstart',e=>{const t=e.touches[0];start(t.clientX,t.clientY);},{passive:true});
+    row.addEventListener('touchmove',e=>{const t=e.touches[0];move(t.clientX,t.clientY);},{passive:true});
+    row.addEventListener('touchend',e=>{const t=e.changedTouches[0];end(t.clientX);});
+    row.addEventListener('mousedown',e=>start(e.clientX,e.clientY));
+    document.addEventListener('mousemove',e=>{if(sw)move(e.clientX,e.clientY);});
+    document.addEventListener('mouseup',e=>{if(sw)end(e.clientX);});
+  });
+}
+initSwipe();
+
+// ── AI AGENT ──
+const agentReplies={
+  'Draft reply to Alex about the slides':"Here's a draft for Alex:\n\n\"Hi Alex — slides look great. Approved on 7 and 15. One note on slide 12: let's keep the rollout to two phases for the all-hands audience. See you Thursday!\"",
+  'Find all emails needing my reply':"Found <strong>3 emails</strong> waiting for your reply:\n1. Alex Chen — Q1 deck approval (9:24 AM)\n2. Sarah Kim — Thursday sync confirmation (8:51 AM)\n3. Jason Park — Pricing page copy (Yesterday)",
+  'Extract all action items from today':"<strong>Today's action items:</strong>\n1. ✅ Approve Alex's Q1 slides (deadline: Thursday)\n2. ✅ Confirm nav redesign presentation for sync\n3. 📅 Review Jason's pricing copy\n4. 📋 Rachel's onboarding handoff — dev-ready",
+  'Summarize newsletters this week':"<strong>Newsletter digest:</strong>\n• Product Hunt: Figma token plugin, 2 AI writing tools\n• Designer News: CSS container queries deep-dive\n• Mobbin: 400+ new screens from Apple Wallet & Taco Bell"
+};
+function agentSend(){
+  const input=document.getElementById('agent-input');
+  const msgs=document.getElementById('agent-msgs');
+  if(!input||!msgs)return;
+  const txt=input.value.trim();if(!txt)return;
+  input.value='';
+  const uMsg=document.createElement('div');
+  uMsg.className='amsg amsg-user';
+  uMsg.innerHTML=`<div class="abub abub-user">${txt}</div>`;
+  msgs.appendChild(uMsg);
+  msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{
+    const reply=agentReplies[txt]||'Scanning your inbox for context\u2026';
+    const aMsg=document.createElement('div');
+    aMsg.className='amsg amsg-ai';
+    aMsg.innerHTML=`<div class="aav"><svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg></div><div class="abub abub-ai">${reply.replace(/\n/g,'<br>')}</div>`;
+    msgs.appendChild(aMsg);
+    msgs.scrollTop=msgs.scrollHeight;
+  },900);
+}
+function agentPrompt(txt){
+  const input=document.getElementById('agent-input');
+  if(input){input.value=txt;agentSend();}
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&document.activeElement&&document.activeElement.id==='agent-input')agentSend();
+});
+
+function archiveRow(n){
+  const r=document.getElementById('row'+n);
+  if(r){r.style.transition='opacity .3s,max-height .4s';r.style.opacity='0';r.style.maxHeight='0';r.style.overflow='hidden';setTimeout(()=>r.remove(),420);}
+}
+
+// ── THEME ──
+</script>
+</div>
+</body>
+</html>
