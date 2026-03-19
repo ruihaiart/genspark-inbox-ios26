@@ -1810,6 +1810,35 @@ function archiveRow(n){
 }
 
 // ── THEME ──
+
+// ── RESPONSIVE PHONE SCALE ──
+function fitPhone() {
+  // Mobile (≤430px): media query already strips the shell, nothing to do
+  if (window.innerWidth <= 430) {
+    const phone = document.querySelector('.phone');
+    if (phone) { phone.style.transform = ''; phone.style.marginBottom = ''; }
+    return;
+  }
+  const phone = document.querySelector('.phone');
+  if (!phone) return;
+  const padH = 160; // body top+bottom padding (80px each)
+  const padW = 120; // body left+right padding (60px each)
+  const phoneW = 393, phoneH = 852;
+  const availW = window.innerWidth  - padW;
+  const availH = window.innerHeight - padH;
+  const scale  = Math.min(availW / phoneW, availH / phoneH, 1);
+  if (scale < 1) {
+    phone.style.transform      = 'scale(' + scale + ')';
+    phone.style.transformOrigin = 'top center';
+    // Compensate layout box (transform doesn't affect flow)
+    phone.style.marginBottom   = ((scale - 1) * phoneH) + 'px';
+  } else {
+    phone.style.transform      = '';
+    phone.style.marginBottom   = '';
+  }
+}
+fitPhone();
+window.addEventListener('resize', fitPhone);
 </script>
 </div>
 </body>
