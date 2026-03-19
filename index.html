@@ -643,10 +643,35 @@ body{background:#E0E2E8;
 .tchip.on{background:var(--blue);color:#fff}
 .tchip:not(.on){background:var(--fill);color:var(--lbl2)}
 /* Compose body (for new email sheet) */
-.cbody{flex:1;padding:12px 20px;overflow-y:auto;font-size:16px;color:var(--lbl2);line-height:24px;min-height:80px}
+.cbody{flex:1;padding:12px 20px;overflow-y:auto;font-size:16px;color:var(--lbl);line-height:24px;min-height:80px}
+.cbody:empty::before{content:attr(placeholder);color:var(--lbl3)}
 .ctoolbar{display:flex;justify-content:space-between;align-items:center;
   padding:10px 20px 20px;border-top:.5px solid var(--sep);flex-shrink:0;
   background:rgba(240,242,245,.92);backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur)}
+/* Dictate listening bar */
+.compose-dictate-bar{display:flex;align-items:center;gap:12px;
+  padding:10px 20px 18px;background:rgba(240,242,245,.92);
+  backdrop-filter:var(--blur);-webkit-backdrop-filter:var(--blur);
+  border-top:.5px solid var(--sep);flex-shrink:0}
+.cdict-wave{display:flex;align-items:center;gap:2.5px;height:22px}
+.cdict-b{width:3px;border-radius:3px;background:var(--blue);
+  animation:cdict-anim .65s ease-in-out infinite alternate}
+.cdict-b:nth-child(1){height:6px;animation-delay:0s}
+.cdict-b:nth-child(2){height:14px;animation-delay:.06s}
+.cdict-b:nth-child(3){height:20px;animation-delay:.03s}
+.cdict-b:nth-child(4){height:10px;animation-delay:.09s}
+.cdict-b:nth-child(5){height:18px;animation-delay:.05s}
+.cdict-b:nth-child(6){height:12px;animation-delay:.08s}
+.cdict-b:nth-child(7){height:22px;animation-delay:.02s}
+.cdict-b:nth-child(8){height:8px;animation-delay:.1s}
+.cdict-b:nth-child(9){height:16px;animation-delay:.04s}
+.cdict-b:nth-child(10){height:10px;animation-delay:.07s}
+@keyframes cdict-anim{from{transform:scaleY(.3);opacity:.5}to{transform:scaleY(1);opacity:1}}
+.cdict-lbl{font-size:15px;font-weight:500;color:var(--blue);flex:1}
+.cdict-stop{width:32px;height:32px;border-radius:50%;background:var(--blue);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  flex-shrink:0;transition:opacity .12s}
+.cdict-stop:active{opacity:.7}
 .cticons{display:flex;gap:18px}
 .aiw-btn{display:flex;align-items:center;gap:6px;background:var(--blue-bg);border-radius:18px;
   padding:8px 14px;border:.5px solid rgba(10,132,255,.25);cursor:pointer;transition:opacity .12s}
@@ -1402,12 +1427,29 @@ body{background:#E0E2E8;
     <div class="cfield"><span class="cflbl">To</span><span class="cfval" style="color:var(--lbl3)">Recipients...</span></div>
     <div class="cfield" style="cursor:pointer"><span style="font-size:16px;color:var(--blue)">Cc/Bcc</span></div>
     <div class="cfield"><span class="cflbl">Sub</span><span class="cfval" style="color:var(--lbl3)">Subject</span></div>
-    <div class="cbody">Type your message or use AI to write...</div>
-    <div class="ctoolbar">
+    <div class="cbody" id="compose-body" contenteditable="true" style="outline:none;min-height:120px"><span style="color:var(--lbl3)">Type your message or use AI to write...</span></div>
+    <!-- Dictate listening bar — hidden by default -->
+    <div class="compose-dictate-bar" id="compose-dictate-bar" style="display:none">
+      <div class="cdict-wave">
+        <div class="cdict-b"></div><div class="cdict-b"></div><div class="cdict-b"></div>
+        <div class="cdict-b"></div><div class="cdict-b"></div><div class="cdict-b"></div>
+        <div class="cdict-b"></div><div class="cdict-b"></div><div class="cdict-b"></div>
+        <div class="cdict-b"></div>
+      </div>
+      <span class="cdict-lbl">Listening…</span>
+      <div class="cdict-stop" onclick="stopDictate()">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><rect x="4" y="4" width="16" height="16" rx="2"/></svg>
+      </div>
+    </div>
+    <div class="ctoolbar" id="compose-toolbar">
       <div class="cticons">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--lbl3)"><rect x="3" y="3" width="18" height="18" rx="2"/></svg>
+        <!-- Mic button -->
+        <div id="compose-mic-btn" onclick="startDictate()" style="display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;cursor:pointer;transition:background .12s">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--lbl3)" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/></svg>
+        </div>
       </div>
       <div class="aiw-btn" onclick="openOverlay('aiwrite-overlay')"><svg width="13" height="13" viewBox="0 0 24 24" fill="var(--blue)"><path d="M12 2L13.8 8.2L20 10L13.8 11.8L12 18L10.2 11.8L4 10L10.2 8.2L12 2Z"/></svg><span style="font-size:13px;font-weight:600;color:var(--blue)">Write with AI</span></div>
     </div>
@@ -1957,6 +1999,52 @@ document.addEventListener('keydown',e=>{
 function archiveRow(n){
   const r=document.getElementById('row'+n);
   if(r){r.style.transition='opacity .3s,max-height .4s';r.style.opacity='0';r.style.maxHeight='0';r.style.overflow='hidden';setTimeout(()=>r.remove(),420);}
+}
+
+// ── COMPOSE DICTATE ──
+const dictateTexts = [
+  "Hi Sarah, just confirming I'll be presenting the nav redesign at Thursday's sync. I'll have the full walkthrough ready — see you then!",
+  "Hi Sarah, confirmed! I'm all set to walk through the nav redesign on Thursday. Looking forward to it.",
+];
+let dictateIdx = 0, dictateTimer = null, dictateTypeInterval = null;
+
+function startDictate() {
+  const bar = document.getElementById('compose-dictate-bar');
+  const toolbar = document.getElementById('compose-toolbar');
+  const mic = document.getElementById('compose-mic-btn');
+  if (!bar || !toolbar) return;
+  bar.style.display = 'flex';
+  toolbar.style.display = 'none';
+  // After 1.4s, stream text into body
+  dictateTimer = setTimeout(() => {
+    const body = document.getElementById('compose-body');
+    if (!body) return;
+    // Clear placeholder
+    if (body.querySelector('span')) body.innerHTML = '';
+    const full = dictateTexts[dictateIdx % dictateTexts.length];
+    let idx = 0;
+    const lbl = document.querySelector('.cdict-lbl');
+    if (lbl) lbl.textContent = 'Dictating…';
+    dictateTypeInterval = setInterval(() => {
+      if (idx >= full.length) {
+        clearInterval(dictateTypeInterval); dictateTypeInterval = null;
+        stopDictate(); dictateIdx++;
+        return;
+      }
+      body.textContent = full.substring(0, ++idx);
+    }, 28);
+  }, 1400);
+}
+
+function stopDictate() {
+  if (dictateTimer) { clearTimeout(dictateTimer); dictateTimer = null; }
+  if (dictateTypeInterval) { clearInterval(dictateTypeInterval); dictateTypeInterval = null; }
+  const bar = document.getElementById('compose-dictate-bar');
+  const toolbar = document.getElementById('compose-toolbar');
+  const lbl = document.querySelector('.cdict-lbl');
+  if (bar) bar.style.display = 'none';
+  if (toolbar) toolbar.style.display = 'flex';
+  if (lbl) lbl.textContent = 'Listening…';
 }
 
 // ── THEME ──
