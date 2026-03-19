@@ -74,19 +74,15 @@ body{background:#E0E2E8;
   -webkit-overflow-scrolling:touch;scrollbar-width:none}
 .sc::-webkit-scrollbar{display:none}
 
-/* ── TAB BAR — Liquid Glass ── */
+/* ── TAB BAR — White ── */
 .tabbar{
   position:absolute;bottom:16px;left:24px;right:24px;height:68px;
-  background:var(--glass-bg);
-  backdrop-filter:blur(48px) saturate(200%) brightness(1.06);
-  -webkit-backdrop-filter:blur(48px) saturate(200%) brightness(1.06);
+  background:#FFFFFF;
   border-radius:36px;
-  border:.5px solid var(--glass-border);
-  box-shadow:var(--glass-shadow);
+  border:.5px solid var(--sep2);
+  box-shadow:0 2px 16px rgba(0,0,0,.08),0 1px 4px rgba(0,0,0,.04);
   display:flex;align-items:center;justify-content:space-around;
   padding:0 16px;z-index:40;
-  /* Specular sheen on top edge */
-  background-image:linear-gradient(180deg,rgba(255,255,255,.55) 0%,rgba(255,255,255,.0) 60%);
 }
 .ti{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;
   flex:1;padding:10px 12px;transition:all .18s;border-radius:20px;position:relative}
@@ -372,7 +368,9 @@ body{background:#E0E2E8;
 .ecrow-subj{font-size:13px;color:var(--lbl2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ecrow-prev{font-size:12px;color:var(--lbl3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
-/* ── INBOX SCREEN (traditional list but dark) ── */
+/* ── INBOX SCREEN ── */
+#inbox{background:var(--bg2)}
+#inbox .sc{background:var(--bg2)}
 .inbox-hdr{padding:59px 24px 12px;display:flex;justify-content:space-between;align-items:flex-end}
 .ltitle{font-size:34px;font-weight:700;letter-spacing:-.5px;color:var(--lbl)}
 .nbtn{width:34px;height:34px;border-radius:50%;background:var(--fill);display:flex;
@@ -426,7 +424,7 @@ body{background:#E0E2E8;
 .eprev{font-size:13px;color:var(--lbl3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 /* Section header in list */
 .list-sec-hdr{padding:16px 20px 6px;font-size:12px;font-weight:700;
-  color:var(--lbl3);letter-spacing:.06em;text-transform:uppercase}
+  color:var(--lbl3);letter-spacing:.06em;text-transform:uppercase;background:var(--bg2)}
 
 /* ── DETAIL SCREEN ── */
 .dnav{position:sticky;top:0;z-index:10;background:rgba(255,255,255,.92);
